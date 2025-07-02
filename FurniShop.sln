@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastrucure", "Infrastrucure", "{A1D52345-1B69-4A58-8BE2-B56F64BC60F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{4D0CEFF2-6E60-4DFE-AA4B-EA4063246982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FurniShop", "FurniShop\FurniShop.csproj", "{70284DDB-D5BD-4083-BC44-EA7904328845}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{2C35A8AA-40AF-4A43-9CC2-1BE4431201AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{1DE7EACD-0B3B-4321-BD57-4A3EAB4C3E54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra.Data", "Infra.Data", "{EFD78DD9-B628-4322-B346-282A55990239}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra.IoC", "Infra.IoC", "{8B6C6F69-5ECB-4AFD-BBDF-1BE5FFBF802E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70284DDB-D5BD-4083-BC44-EA7904328845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70284DDB-D5BD-4083-BC44-EA7904328845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70284DDB-D5BD-4083-BC44-EA7904328845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70284DDB-D5BD-4083-BC44-EA7904328845}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{70284DDB-D5BD-4083-BC44-EA7904328845} = {4D0CEFF2-6E60-4DFE-AA4B-EA4063246982}
+		{2C35A8AA-40AF-4A43-9CC2-1BE4431201AF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1DE7EACD-0B3B-4321-BD57-4A3EAB4C3E54} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{EFD78DD9-B628-4322-B346-282A55990239} = {A1D52345-1B69-4A58-8BE2-B56F64BC60F9}
+		{8B6C6F69-5ECB-4AFD-BBDF-1BE5FFBF802E} = {A1D52345-1B69-4A58-8BE2-B56F64BC60F9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0E9B9E7-A832-4A5F-8A41-9E05C00F532C}
+	EndGlobalSection
+EndGlobal
