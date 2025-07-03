@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FurniShop.Application", "Fu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Data", "Infra.Data\Infra.Data.csproj", "{369CBB55-9E2E-455E-844E-F06E73A817CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FurniShop.Infra.IoC", "FurniShop.Infra.IoC\FurniShop.Infra.IoC.csproj", "{DF447F51-D779-41C4-8960-72EB33E1F445}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{369CBB55-9E2E-455E-844E-F06E73A817CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{369CBB55-9E2E-455E-844E-F06E73A817CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{369CBB55-9E2E-455E-844E-F06E73A817CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF447F51-D779-41C4-8960-72EB33E1F445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF447F51-D779-41C4-8960-72EB33E1F445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF447F51-D779-41C4-8960-72EB33E1F445}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF447F51-D779-41C4-8960-72EB33E1F445}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{BD325772-F0BC-4D0C-A208-685D9B542140} = {1DE7EACD-0B3B-4321-BD57-4A3EAB4C3E54}
 		{36877723-FF94-4426-A5BD-20797FED508C} = {2C35A8AA-40AF-4A43-9CC2-1BE4431201AF}
 		{369CBB55-9E2E-455E-844E-F06E73A817CF} = {EFD78DD9-B628-4322-B346-282A55990239}
+		{DF447F51-D779-41C4-8960-72EB33E1F445} = {8B6C6F69-5ECB-4AFD-BBDF-1BE5FFBF802E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0E9B9E7-A832-4A5F-8A41-9E05C00F532C}

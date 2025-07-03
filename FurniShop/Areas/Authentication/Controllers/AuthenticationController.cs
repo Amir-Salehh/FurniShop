@@ -1,5 +1,8 @@
 ﻿using FurniShop.Application.ViewModels;
+using FurniShop.Domain.Models;
+using Konscious.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 
 namespace FurniShop.Areas.Authentication.Controllers
 {
@@ -23,7 +26,6 @@ namespace FurniShop.Areas.Authentication.Controllers
             {
                 return View(model);
             }
-
             TempData["Message"] = "ثبت نام موفقیت آمیز بود.";
             return RedirectToAction("Login");
         }

@@ -1,5 +1,4 @@
-﻿using FurniShop.Application.ViewModels;
-using FurniShop.Domain.Models;
+﻿using FurniShop.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +15,6 @@ namespace FurniShop.Domain.Interfaces
         public void UpdateUser(User user);
         public void DeleteUser(int Id);
         public void Save();
+        public bool IsExistUser(string email, string password);
     }
 }

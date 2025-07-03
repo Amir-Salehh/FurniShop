@@ -1,10 +1,11 @@
-﻿using FurniShop.Application.ViewModels;
+﻿using FurniShop.Application.Security;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using Infra.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,8 +21,14 @@ namespace Infra.Data.Repository
 
         public void CreateNewUser(User user)
         {
+            string password = user.Password;
+            byte[] salt = RandomNumberGenerator.GetBytes(16);
+            user.saltpassword = salt;
+            string Passwordhashed = PasswordHelper.HashPasswordBase64(password, salt);
+            user.Password = Passwordhashed;
+
             _ctx.users.Add(user);
-            Save();
+            Save(); 
         }
 
         public void DeleteUser(int UserId)
@@ -40,6 +47,11 @@ namespace Infra.Data.Repository
         {
             var user = _ctx.users.Find(Id);
             return user;
+        }
+
+        public bool IsExistUser(string email, string password)
+        {
+            return _ctx.users.Any(u => u.Email == email && u.Password == password );
         }
 
         public void Save()

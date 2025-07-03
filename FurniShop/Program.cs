@@ -1,3 +1,4 @@
+using FurniShop.Infra.IoC;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,8 @@ builder.Services.AddDbContext<FurniShopDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("FurniShopDbConnection"));
 });
+
+DependencyContainer.RegisterServices(builder.Services);
 
 var app = builder.Build();
 

@@ -7,12 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FurniShop.Application\FurniShop.Application.csproj" />
-    <ProjectReference Include="..\FurniShop.Domain\FurniShop.Domain.csproj" />
+    <ProjectReference Include="..\Infra.Data\Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>

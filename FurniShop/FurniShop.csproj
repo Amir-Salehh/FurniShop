@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FurniShop.Application\FurniShop.Application.csproj" />
+    <ProjectReference Include="..\FurniShop.Infra.IoC\FurniShop.Infra.IoC.csproj" />
     <ProjectReference Include="..\Infra.Data\Infra.Data.csproj" />
   </ItemGroup>
 
