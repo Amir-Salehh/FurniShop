@@ -1,100 +1,68 @@
-﻿<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FurniShop | صفحه اصلی</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-</head>
-<body>
+﻿@{
+    ViewData["Title"] = "FurniShop | فروشگاه مبلمان مدرن";
+ }
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+<!-- Hero Banner بدون تصویر -->
+<section class="hero">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#">FurniShop</a>
-      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#mainNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a href="index.html" class="nav-link active">خانه</a></li>
-          <li class="nav-item"><a href="products.html" class="nav-link">محصولات</a></li>
-          <li class="nav-item"><a href="cart.html" class="nav-link">سبد خرید</a></li>
-          <li class="nav-item"><a href="login.html" class="nav-link">ورود</a></li>
-        </ul>
-      </div>
+        <h1 class="fw-bold mb-3">زیبایی را به خانه‌تان بیاورید</h1>
+        <p class="lead">فروشگاه مبلمان با طراحی مدرن، شیک و اقتصادی</p>
+        <a href="products.html" class="btn btn-warning btn-lg mt-3 shadow">مشاهده محصولات</a>
     </div>
-  </nav>
+</section>
 
-  <!-- Banner -->
-  <section class="bg-dark text-white text-center py-5">
-    <div class="container">
-      <h1 class="display-5">خانه‌ات را زیبا کن</h1>
-      <p class="lead">خرید مبلمان مدرن با بهترین قیمت</p>
-      <a href="products.html" class="btn btn-warning btn-lg mt-3">مشاهده محصولات</a>
+<!-- دسته‌بندی‌ها -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">🗂️ دسته‌بندی محصولات</h2>
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="card category-card shadow-sm">
+                <div class="card-body">
+                    <img src="/images/مبل.jpg" class="card-img-top" alt="مبل راحتی">
+                    <h5 class="card-title">🛋️ مبل</h5>
+                    <p class="card-text text-muted">تنوع بالا در رنگ و طراحی</p>
+                    <a href="#" class="btn btn-outline-primary">مشاهده</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card category-card shadow-sm">
+                <div class="card-body">
+                    <img src="/images/صندلی.jpg" class="card-img-top" alt="صندلی">
+                    <h5 class="card-title">🪑 صندلی</h5>
+                    <p class="card-text text-muted">مدرن و راحت برای فضاهای مختلف</p>
+                    <a href="#" class="btn btn-outline-success">مشاهده</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card category-card shadow-sm">
+                <div class="card-body">
+                    <img src="/images/میز.jpg" class="card-img-top" alt="میز">
+                    <h5 class="card-title">🪟 میز</h5>
+                    <p class="card-text text-muted">میزهای کار، جلو مبلی و ناهارخوری</p>
+                    <a href="#" class="btn btn-outline-danger">مشاهده</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
+</section>
 
-  <!-- دسته‌بندی‌ها -->
-  <section class="container my-5">
-    <h2 class="mb-4 text-center">دسته‌بندی محصولات</h2>
-    <div class="row text-center">
-      <div class="col-md-4">
-        <div class="card shadow-sm">
-          <img src="https://via.placeholder.com/300x200?text=مبل" class="card-img-top" alt="مبل">
-          <div class="card-body">
-            <h5 class="card-title">مبل</h5>
-            <a href="#" class="btn btn-outline-primary">مشاهده</a>
-          </div>
+<!-- محصولات پر فروش -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">🔥 محصولات پر فروش</h2>
+    <div class="row g-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <img src="~/images/مبل کلاسیک.jpg" />
+                    <h5 class="card-title">🛋️ مبل راحتی کلاسیک</h5>
+                    <p class="text-muted">۴٬۲۰۰٬۰۰۰ تومان</p>
+                    <a href="product-detail.html" class="btn btn-sm btn-outline-dark">جزئیات</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm">
-          <img src="https://via.placeholder.com/300x200?text=صندلی" class="card-img-top" alt="صندلی">
-          <div class="card-body">
-            <h5 class="card-title">صندلی</h5>
-            <a href="#" class="btn btn-outline-primary">مشاهده</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card shadow-sm">
-          <img src="https://via.placeholder.com/300x200?text=میز" class="card-img-top" alt="میز">
-          <div class="card-body">
-            <h5 class="card-title">میز</h5>
-            <a href="#" class="btn btn-outline-primary">مشاهده</a>
-          </div>
-        </div>
-      </div>
+        <!-- بقیه محصولات را می‌تونی مشابه اضافه کنی -->
     </div>
-  </section>
+</section>
 
-  <!-- محصولات پر فروش -->
-  <section class="container my-5">
-    <h2 class="mb-4 text-center">محصولات پر فروش</h2>
-    <div class="row">
-      <!-- محصول -->
-      <div class="col-md-3">
-        <div class="card shadow-sm">
-          <img src="https://via.placeholder.com/300x200?text=محصول+۱" class="card-img-top" alt="محصول">
-          <div class="card-body">
-            <h5 class="card-title">مبل راحتی</h5>
-            <p class="card-text text-muted">۳٬۵۰۰٬۰۰۰ تومان</p>
-            <a href="product-detail.html" class="btn btn-sm btn-outline-success">مشاهده</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- می‌تونی بقیه محصول‌ها رو کپی کنی -->
-      <!-- ... -->
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-light text-center py-4">
-    <p class="mb-0">© 2025 فروشگاه FurniShop. تمامی حقوق محفوظ است.</p>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

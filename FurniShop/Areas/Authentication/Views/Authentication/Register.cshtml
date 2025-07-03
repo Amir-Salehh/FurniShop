@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "FurniShop | ثبت‌نام";
+}
+
+<main class="container d-flex justify-content-center align-items-center py-5" style="min-height: 80vh;">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="text-center mb-4">ایجاد حساب کاربری</h4>
+
+                <form method="post" asp-area="Authentication" asp-controller="Authentication" asp-action="RegisterPost">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label for="fullname" class="form-label">نام کامل</label>
+                        <input type="text" asp-for="FullName" class="form-control" id="fullname" name="FullName" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">ایمیل</label>
+                        <input type="email" asp-for="Email" class="form-control" id="email" name="Email" placeholder="example@email.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">رمز عبور</label>
+                        <input type="password" asp-for="Password" class="form-control" id="password" name="Password" placeholder="******" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm-password" class="form-label">تأیید رمز عبور</label>
+                        <input type="password" asp-for="ConfirmPassword" class="form-control" id="confirm-password" name="ConfirmPassword" placeholder="******" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">ثبت‌ نام</button>
+                    </div>
+                </form>
+                <p class="text-center mt-3 mb-0 text-muted">
+                    قبلاً حساب دارید؟ <a href="/Authentication/Auth/Login">وارد شوید</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
