@@ -1,7 +1,6 @@
 ﻿using FurniShop.Application.Interfaces;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
-using Konscious.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +17,14 @@ namespace FurniShop.Application.Services
         {
             _userRepository = userRepository;
         }
-        public bool IsExistUser(string email, string password)
+        public bool CheckUser(string email, string password)
         {
-            return IsExistUser(email.Trim().ToLower(), password);
+            return _userRepository.IsExistUser(email.Trim().ToLower(), password);
         }
 
-        public int RegisterUser(User user)
+        public void RegisterUser(User user)
         {
- 
-
             _userRepository.CreateNewUser(user);
-            return user.UserId;
         }
     }
 }

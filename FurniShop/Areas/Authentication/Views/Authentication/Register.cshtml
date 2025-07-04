@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "FurniShop | ثبت‌نام";
+﻿@model FurniShop.Application.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "FurniShop | ثبت‌ نام";
 }
 
 <main class="container d-flex justify-content-center align-items-center py-5" style="min-height: 80vh;">
@@ -13,25 +15,37 @@
                     <div class="mb-3">
                         <label for="fullname" class="form-label">نام کامل</label>
                         <input type="text" asp-for="FullName" class="form-control" id="fullname" name="FullName" >
+                        <span class="text-danger" asp-validation-for="FullName"></span>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">ایمیل</label>
                         <input type="email" asp-for="Email" class="form-control" id="email" name="Email" placeholder="example@email.com" required>
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">شماره تلفن</label>
+                        <input type="email" asp-for="PhoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="example@email.com" required>
+                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">رمز عبور</label>
                         <input type="password" asp-for="Password" class="form-control" id="password" name="Password" placeholder="******" required>
+                        <span class="text-danger" asp-validation-for="Password"></span>
                     </div>
                     <div class="mb-3">
                         <label for="confirm-password" class="form-label">تأیید رمز عبور</label>
                         <input type="password" asp-for="ConfirmPassword" class="form-control" id="confirm-password" name="ConfirmPassword" placeholder="******" required>
+                        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">ثبت‌ نام</button>
                     </div>
+                    <div class="d-grid">
+                        <span class="text-danger">@TempData["Message"]</span>
+                    </div>
                 </form>
                 <p class="text-center mt-3 mb-0 text-muted">
-                    قبلاً حساب دارید؟ <a href="/Authentication/Auth/Login">وارد شوید</a>
+                    قبلاً حساب دارید؟ <a asp-route="Login">وارد شوید</a>
                 </p>
             </div>
         </div>

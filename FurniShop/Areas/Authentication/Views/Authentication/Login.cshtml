@@ -1,0 +1,44 @@
+﻿@model FurniShop.Application.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "FurniShop | ورود";
+}
+
+<main class="container d-flex justify-content-center align-items-center py-5" style="min-height: 80vh;">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="text-center mb-4">ورود به حساب کاربری</h4>
+
+                <form method="post" asp-area="Authentication" asp-controller="Authentication" asp-action="Login">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">ایمیل</label>
+                        <input asp-for="Email" type="email" class="form-control" id="email" placeholder="example@email.com" />
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">رمز عبور</label>
+                        <input asp-for="Password" type="password" class="form-control" id="password" placeholder="******" />
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe" />
+                        <label class="form-check-label" for="rememberMe">مرا به خاطر بسپار</label>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">ورود</button>
+                    </div>
+
+                    <p class="text-center mt-3 mb-0 text-muted">
+                        حساب کاربری ندارید؟ <a asp-action="Register">ثبت‌نام کنید</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

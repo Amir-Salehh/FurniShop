@@ -31,7 +31,7 @@ namespace FurniShop.Application.ViewModels
         [StringLength(250)]
         [Compare("ConfirmPassword", ErrorMessage = "Password و ConfirmPassword باید برابر باشند")]
         [DataType(DataType.Password)]
-        public string ConfirmOassword { get; set; }
+        public string ConfirmPassword { get; set; }
         [DefaultValue(Role.User)]
         public Role role { get; set; }
 
