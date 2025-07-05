@@ -10,13 +10,15 @@
             <div class="card-body p-4">
                 <h4 class="text-center mb-4">ورود به حساب کاربری</h4>
 
-                <form method="post" asp-area="Authentication" asp-controller="Authentication" asp-action="Login">
+            
+
+                <form method="post" asp-area="Authentication" asp-controller="Authentication" asp-action="LoginPost">
                     @Html.AntiForgeryToken()
 
                     <div class="mb-3">
-                        <label for="email" class="form-label">ایمیل</label>
-                        <input asp-for="Email" type="email" class="form-control" id="email" placeholder="example@email.com" />
-                        <span class="text-danger" asp-validation-for="Email"></span>
+                        <label for="email_phone" class="form-label">ایمیل</label>
+                        <input asp-for="EmailPhone" type="text" class="form-control" id="email_phone" />
+                        <span class="text-danger" asp-validation-for="EmailPhone"></span>
                     </div>
 
                     <div class="mb-3">
@@ -38,6 +40,13 @@
                         حساب کاربری ندارید؟ <a asp-action="Register">ثبت‌نام کنید</a>
                     </p>
                 </form>
+
+                @if (TempData["Message"] != null)
+                {
+                    <div class="alert alert-warning text-center">
+                        @TempData["Message"]
+                    </div>
+                }
             </div>
         </div>
     </div>

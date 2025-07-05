@@ -10,6 +10,13 @@
             <div class="card-body p-4">
                 <h4 class="text-center mb-4">ایجاد حساب کاربری</h4>
 
+                @if (TempData["Message"] != null)
+                {
+                    <div class="alert alert-warning text-center">
+                        @TempData["Message"]
+                    </div>
+                }
+
                 <form method="post" asp-area="Authentication" asp-controller="Authentication" asp-action="RegisterPost">
                     @Html.AntiForgeryToken()
                     <div class="mb-3">
@@ -24,7 +31,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="phoneNumber" class="form-label">شماره تلفن</label>
-                        <input type="email" asp-for="PhoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="example@email.com" required>
+                        <input type="text" asp-for="PhoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" required>
                         <span class="text-danger" asp-validation-for="PhoneNumber"></span>
                     </div>
                     <div class="mb-3">
@@ -39,9 +46,6 @@
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary">ثبت‌ نام</button>
-                    </div>
-                    <div class="d-grid">
-                        <span class="text-danger">@TempData["Message"]</span>
                     </div>
                 </form>
                 <p class="text-center mt-3 mb-0 text-muted">

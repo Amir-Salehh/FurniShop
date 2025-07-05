@@ -11,10 +11,12 @@ namespace FurniShop.Domain.Interfaces
     {
         public IEnumerable<User> GetAllUsers();
         public User GetUserById(int Id);
+        public User? GetUserByEmailOrMobile(string emailMobile);
         public void CreateNewUser(User user);
         public void UpdateUser(User user);
         public void DeleteUser(int Id);
         public void Save();
         public bool IsExistUser(string email, string password);
+        public bool CheckExistUser(string emailPhone);
     }
 }

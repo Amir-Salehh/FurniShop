@@ -1,4 +1,5 @@
 ﻿using FurniShop.Application.Interfaces;
+using FurniShop.Application.Security;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using System;
@@ -17,6 +18,21 @@ namespace FurniShop.Application.Services
         {
             _userRepository = userRepository;
         }
+
+        public bool CheckExist(string EmailMobile)
+        {
+            return _userRepository.CheckExistUser(EmailMobile);
+        }
+
+        public bool CheckLogin(string emailPhone, string password)
+        {
+            var user = _userRepository.GetUserByEmailOrMobile(emailPhone);
+            
+            string hashedPassword = PasswordHelper.HashPasswordBase64(password, user.saltpassword);
+
+            return hashedPassword == user.Password;
+        }
+
         public bool CheckUser(string email, string password)
         {
             return _userRepository.IsExistUser(email.Trim().ToLower(), password);

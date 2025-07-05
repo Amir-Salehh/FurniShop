@@ -18,10 +18,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a href="index.html" class="nav-link active">خانه</a></li>
+          <li class="nav-item"><a asp-route="Home" class="nav-link active">خانه</a></li>
           <li class="nav-item"><a href="products.html" class="nav-link">محصولات</a></li>
           <li class="nav-item"><a href="cart.html" class="nav-link">سبد خرید</a></li>
-          <li class="nav-item"><a href="login.html" class="nav-link">ثبت نام/ورود</a></li>
+                    <li class="nav-item"><a asp-area="Authentication" asp-controller="Authentication" asp-action="Login" class="nav-link">ثبت نام/ورود</a></li>
         </ul>
       </div>
     </div>

@@ -19,6 +19,18 @@ namespace Infra.Data.Repository
             _ctx = ctx;
         }
 
+        public bool CheckExistUser(string emailPhone)
+        {
+            bool checkEmail = _ctx.users.Any(u => u.Email == emailPhone);
+            bool checkPhoneNumber = _ctx.users.Any(u => u.PhoneNumber == emailPhone);
+            bool checkAll = checkEmail && checkPhoneNumber;
+            if (!checkAll) {
+                return false;
+            }
+
+            return true;
+        }
+
         public void CreateNewUser(User user)
         {
             string password = user.Password;
@@ -41,6 +53,13 @@ namespace Infra.Data.Repository
         {
             var users = new List<User>().AsEnumerable();
             return users;
+        }
+
+        public User? GetUserByEmailOrMobile(string emailMobile)
+        {
+            var user = _ctx.users.FirstOrDefault(u => u.Email == emailMobile || u.PhoneNumber == emailMobile);
+            
+            return user;
         }
 
         public User GetUserById(int Id)
