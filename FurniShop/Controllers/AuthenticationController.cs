@@ -2,13 +2,16 @@
 using FurniShop.Application.Security;
 using FurniShop.Application.ViewModels;
 using FurniShop.Domain.Models;
-using Konscious.Security.Cryptography;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
-namespace FurniShop.Areas.Authentication.Controllers
+
+namespace FurniShop.Controllers
 {
-    [Area("Authentication")]
+    [Route("Auth/{action}")]
     public class AuthenticationController : Controller
     {
         private readonly IUserService _userService;
@@ -16,7 +19,6 @@ namespace FurniShop.Areas.Authentication.Controllers
         {
             _userService = userService;
         }
-        [Route("Login")]
         public IActionResult Login()
         {
             return View();
@@ -34,11 +36,30 @@ namespace FurniShop.Areas.Authentication.Controllers
                 TempData["Message"] = "ایمیل یا شماره تلفن وجود ندارد";
                 return RedirectToAction("Login");
             }
-            if (!_userService.CheckLogin(model.EmailPhone, model.Password)) 
+
+            if (!_userService.CheckLogin(model.EmailPhone, model.Password, out var user)) 
             {
                 TempData["Message"] = "رمز عبور اشتباه میباشد";
                 return RedirectToAction("Login");
             }
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.role.ToString()),
+                new Claim("Email", user.Email)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = model.RememberMe,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+            };
+
+            HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
 
             return RedirectToAction("Index", "Home");
         }
@@ -54,12 +75,12 @@ namespace FurniShop.Areas.Authentication.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View("Register", model);
             }
 
             byte[] salt = RandomNumberGenerator.GetBytes(16);
 
-            string Hashed = PasswordHelper.HashPasswordBase64(model.Password, salt).ToString();
+            string Hashed = PasswordHelper.HashPasswordBase64(model.Password, salt);
 
             User user = new User()
             {
@@ -67,11 +88,12 @@ namespace FurniShop.Areas.Authentication.Controllers
                 Email = model.Email,
                 Password = Hashed,
                 saltpassword = salt,
-                PhoneNumber = model.PhoneNumber
+                PhoneNumber = model.PhoneNumber,
             };
-            if (_userService.CheckUser(model.Email, model.Password))
+
+            if (_userService.CheckUser(model.Email, model.PhoneNumber))
             {
-                TempData["Message"] = "نام کاربری یا رمز عبور اشتباه است";
+                TempData["Message"] = "ایمیل یا شماره تلفن وجود دارد";
                 return RedirectToAction("Register");
             }
             else 
@@ -80,7 +102,12 @@ namespace FurniShop.Areas.Authentication.Controllers
                 TempData["Message"] = "ثبت نام موفقیت آمیز بود.";
                 return RedirectToAction("Login");
             }
+        }
 
+        public ActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
     }
 }

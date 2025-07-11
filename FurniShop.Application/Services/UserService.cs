@@ -2,9 +2,13 @@
 using FurniShop.Application.Security;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,18 +28,21 @@ namespace FurniShop.Application.Services
             return _userRepository.CheckExistUser(EmailMobile);
         }
 
-        public bool CheckLogin(string emailPhone, string password)
+        public bool CheckLogin(string emailPhone, string password, out User user)
         {
-            var user = _userRepository.GetUserByEmailOrMobile(emailPhone);
-            
-            string hashedPassword = PasswordHelper.HashPasswordBase64(password, user.saltpassword);
+            user = _userRepository.GetUserByEmailOrMobile(emailPhone);
 
-            return hashedPassword == user.Password;
+            if (user == null)
+                return false;
+
+            string hashedPassword = PasswordHelper.HashPasswordBase64(password.Trim(), user.saltpassword);
+
+            return string.Equals(hashedPassword, user.Password, StringComparison.Ordinal);
         }
 
-        public bool CheckUser(string email, string password)
+        public bool CheckUser(string email, string PhoneNumber)
         {
-            return _userRepository.IsExistUser(email.Trim().ToLower(), password);
+            return _userRepository.IsExistUser(email.Trim().ToLower(), PhoneNumber);
         }
 
         public void RegisterUser(User user)

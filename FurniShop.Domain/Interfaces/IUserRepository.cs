@@ -16,7 +16,7 @@ namespace FurniShop.Domain.Interfaces
         public void UpdateUser(User user);
         public void DeleteUser(int Id);
         public void Save();
-        public bool IsExistUser(string email, string password);
+        public bool IsExistUser(string email, string mobilePhone);
         public bool CheckExistUser(string emailPhone);
     }
 }

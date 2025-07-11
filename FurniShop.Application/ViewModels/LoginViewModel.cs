@@ -12,9 +12,11 @@ namespace FurniShop.Application.ViewModels
         [Required(ErrorMessage = "این پارامتر نمیتواند خالی باشد")]
         [StringLength(255)]
         public string EmailPhone { get; set; }
+
         [Required(ErrorMessage = "این پارامتر نمیتواند خالی باشد")]
         [StringLength(255)]
         public string Password { get; set; }
+
         public bool RememberMe { get; set; } = false;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

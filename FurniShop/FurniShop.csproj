@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Infra.Data\Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Authentication\Controllers\" />
+  </ItemGroup>
+
 </Project>

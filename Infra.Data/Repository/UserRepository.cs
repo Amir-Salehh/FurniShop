@@ -23,22 +23,16 @@ namespace Infra.Data.Repository
         {
             bool checkEmail = _ctx.users.Any(u => u.Email == emailPhone);
             bool checkPhoneNumber = _ctx.users.Any(u => u.PhoneNumber == emailPhone);
-            bool checkAll = checkEmail && checkPhoneNumber;
-            if (!checkAll) {
-                return false;
+            if (checkEmail || checkPhoneNumber)
+            {
+                return true;
             }
-
-            return true;
+            else
+                return false;
         }
 
         public void CreateNewUser(User user)
         {
-            string password = user.Password;
-            byte[] salt = RandomNumberGenerator.GetBytes(16);
-            user.saltpassword = salt;
-            string Passwordhashed = PasswordHelper.HashPasswordBase64(password, salt);
-            user.Password = Passwordhashed;
-
             _ctx.users.Add(user);
             Save(); 
         }
@@ -68,9 +62,9 @@ namespace Infra.Data.Repository
             return user;
         }
 
-        public bool IsExistUser(string email, string password)
+        public bool IsExistUser(string email, string phoneNumber)
         {
-            return _ctx.users.Any(u => u.Email == email && u.Password == password );
+            return _ctx.users.Any(u => u.Email == email || u.PhoneNumber == phoneNumber);
         }
 
         public void Save()

@@ -17,7 +17,7 @@
                     </div>
                 }
 
-                <form method="post" asp-area="Authentication" asp-controller="Authentication" asp-action="RegisterPost">
+                <form method="post" asp-controller="Authentication" asp-action="RegisterPost">
                     @Html.AntiForgeryToken()
                     <div class="mb-3">
                         <label for="fullname" class="form-label">نام کامل</label>

@@ -1,5 +1,6 @@
 using FurniShop.Infra.IoC;
 using Infra.Data.Context;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -14,6 +15,14 @@ builder.Services.AddDbContext<FurniShopDbContext>(options =>
 });
 
 DependencyContainer.RegisterServices(builder.Services);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+    AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login";
+        options.LogoutPath = "/Auth/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    });
 
 var app = builder.Build();
 
@@ -33,11 +42,6 @@ app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Authentication}/{action=Login}");
 
 app.MapControllerRoute(
     name: "default",

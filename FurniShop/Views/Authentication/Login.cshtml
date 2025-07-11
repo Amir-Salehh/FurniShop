@@ -12,11 +12,11 @@
 
             
 
-                <form method="post" asp-area="Authentication" asp-controller="Authentication" asp-action="LoginPost">
+                <form method="post" asp-controller="Authentication" asp-action="LoginPost">
                     @Html.AntiForgeryToken()
 
                     <div class="mb-3">
-                        <label for="email_phone" class="form-label">ایمیل</label>
+                        <label for="email_phone" class="form-label">ایمیل یا شماره تلفن </label>
                         <input asp-for="EmailPhone" type="text" class="form-control" id="email_phone" />
                         <span class="text-danger" asp-validation-for="EmailPhone"></span>
                     </div>
