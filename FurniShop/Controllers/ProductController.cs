@@ -2,7 +2,8 @@
 
 namespace FurniShop.Controllers
 {
-    public class ProductController1 : Controller
+    [Route("/Product")]
+    public class ProductController : Controller
     {
         public IActionResult Index()
         {

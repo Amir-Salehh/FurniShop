@@ -1,11 +1,18 @@
+html, body {
+    height: 100%;
+}
+
 body {
-    background-color: #f8f9fa;
-    font-family: 'Vazir', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .card {
     border: none;
     border-radius: 1rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
 .btn-primary {
@@ -32,3 +39,73 @@ body {
     transform: translateY(-5px);
     transition: 0.3s ease;
 }
+
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+.badge-sale {
+    padding: 5px 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+}
+
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+.btn-outline-success {
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+    .btn-outline-success:hover {
+        background-color: #198754;
+        color: #fff;
+    }
+
+.card-img-top {
+    transition: transform 0.4s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+footer {
+    margin-top: auto;
+}
+
+.product-card {
+    border-radius: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-card img {
+        border-top-right-radius: 16px;
+        border-top-left-radius: 16px;
+        transition: transform 0.4s ease;
+    }
+
+
+    .product-card:hover img {
+        transform: scale(1.05);
+    }
