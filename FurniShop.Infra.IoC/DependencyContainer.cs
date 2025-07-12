@@ -21,6 +21,8 @@ namespace FurniShop.Infra.IoC
 
             // Infra Layer
             service.AddScoped<IUserRepository, UserRepository>();
+            service.AddScoped<ICategoryRepository, CategoryRepository>();
+            service.AddScoped<IProductRepository, ProductRepository>();
         }
     }
 }
