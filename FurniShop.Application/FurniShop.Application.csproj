@@ -14,4 +14,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\FurniShop.Domain\FurniShop.Domain.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="ViewModels\Product\" />
+	</ItemGroup>
 </Project>

@@ -20,7 +20,7 @@
             <div class="collapse navbar-collapse justify-content-between" id="navbar">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link active">خانه</a></li>
-                    <li class="nav-item"><a asp-controller="Products" asp-action="Index" class="nav-link">محصولات</a></li>
+                    <li class="nav-item"><a asp-controller="Product" asp-action="Index" class="nav-link">محصولات</a></li>
 
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -31,11 +31,11 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">ورود به پنل</a></li>
-                                <li><a class="dropdown-item" asp-controller="Cart" asp-action="Index">سبد خرید</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" asp-controller="Authentication" asp-action="Logout">خروج</a></li>
                             </ul>
                         </li>
+                        <li class="nav-item"><a asp-controller="Cart" asp-action="Index" class="nav-link">سبد خرید</a></li>
                     }
                     else
                     {

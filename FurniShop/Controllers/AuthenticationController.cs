@@ -1,12 +1,12 @@
 ﻿using FurniShop.Application.Interfaces;
 using FurniShop.Application.Security;
-using FurniShop.Application.ViewModels;
 using FurniShop.Domain.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
+using FurniShop.Application.ViewModels.Auth;
 
 
 namespace FurniShop.Controllers

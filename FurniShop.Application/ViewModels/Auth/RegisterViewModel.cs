@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static FurniShop.Domain.Models.User;
 
-namespace FurniShop.Application.ViewModels
+namespace FurniShop.Application.ViewModels.Auth
 {
     public class RegisterViewModel
     {
