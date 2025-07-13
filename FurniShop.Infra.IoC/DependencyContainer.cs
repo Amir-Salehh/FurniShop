@@ -18,6 +18,7 @@ namespace FurniShop.Infra.IoC
         {
             // Application Layer
             service.AddScoped<IUserService, UserService>();
+            service.AddScoped<IProductService, ProductService>();
 
             // Infra Layer
             service.AddScoped<IUserRepository, UserRepository>();

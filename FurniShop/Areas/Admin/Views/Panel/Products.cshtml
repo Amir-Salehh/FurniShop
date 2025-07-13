@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "مدیریت محصولات";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold">📦 لیست محصولات</h4>
+    <a href="/Admin/Panel/AddProduct" class="btn btn-sm btn-primary">➕ افزودن محصول جدید</a>
+</div>
+
+<table class="table table-striped table-bordered shadow-sm bg-white">
+    <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>تصویر</th>
+            <th>نام محصول</th>
+            <th>قیمت</th>
+            <th>موجودی</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>۱</td>
+            <td><img src="https://via.placeholder.com/60x40" class="img-thumbnail" /></td>
+            <td>مبل راحتی کلاسیک</td>
+            <td>۳٬۵۰۰٬۰۰۰ تومان</td>
+            <td>۲۵</td>
+            <td>
+                <a href="#" class="btn btn-sm btn-outline-info">ویرایش</a>
+                <a href="#" class="btn btn-sm btn-outline-danger">حذف</a>
+            </td>
+        </tr>
+
+        <!-- سایر محصولات ... -->
+    </tbody>
+</table>

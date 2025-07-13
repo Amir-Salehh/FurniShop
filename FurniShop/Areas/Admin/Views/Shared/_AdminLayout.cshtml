@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - پنل مدیریت</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+        }
+
+            .sidebar a {
+                color: #fff;
+                padding: 10px 15px;
+                display: block;
+                text-decoration: none;
+            }
+
+                .sidebar a:hover {
+                    background-color: #495057;
+                }
+
+        .topbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <nav class="col-md-2 sidebar d-none d-md-block">
+                <div class="pt-4">
+                    <a href="/Admin/Panel/Index" class="fw-bold">🛠 پنل مدیریت</a>
+                    <hr class="bg-secondary" />
+                    <a href="/Admin/Panel/Users">👥 کاربران</a>
+                    <a href="/Admin/Panel/Products">📦 محصولات</a>
+                    <a href="/Admin/Panel/Categories">📂 دسته‌بندی‌ها</a>
+                    <a href="/Admin/Panel/Orders">🧾 سفارشات</a>
+                    <a href="/Admin/Panel/Settings">⚙️ تنظیمات</a>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-10 ms-sm-auto">
+                <div class="topbar p-3">
+                    <div class="d-flex justify-content-between">
+                        <div><h5 class="mb-0">@ViewData["Title"]</h5></div>
+                        <div>
+                            <a href="/" class="btn btn-sm btn-outline-secondary">بازگشت به سایت</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    @RenderBody()
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
