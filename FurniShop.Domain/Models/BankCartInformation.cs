@@ -13,12 +13,12 @@ namespace FurniShop.Domain.Models
         [Key]
         public int CartId { get; set; }
 
-        public string CartNumber { get; set; }
+        public string CartNumber { get; set; } = null!;
 
         [ForeignKey("Seller")]
         public int SellerId { get; set; }
 
-        public string BankName { get; set; }
+        public string BankName { get; set; } = null!;
 
         public DateTime CreatedAt { get; set; }
 

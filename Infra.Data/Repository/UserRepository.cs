@@ -2,6 +2,7 @@
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,10 @@ namespace Infra.Data.Repository
             _ctx = ctx;
         }
 
-        public bool CheckExistUser(string emailPhone)
+        public async Task<bool> CheckExistUserAsync(string emailPhone)
         {
-            bool checkEmail = _ctx.users.Any(u => u.Email == emailPhone);
-            bool checkPhoneNumber = _ctx.users.Any(u => u.PhoneNumber == emailPhone);
+            bool checkEmail = await _ctx.users.AnyAsync(u => u.Email == emailPhone);
+            bool checkPhoneNumber = await _ctx.users.AnyAsync(u => u.PhoneNumber == emailPhone);
             if (checkEmail || checkPhoneNumber)
             {
                 return true;
@@ -31,16 +32,17 @@ namespace Infra.Data.Repository
                 return false;
         }
 
-        public void CreateNewUser(User user)
+        public async Task CreateNewUserAsync(User user)
         {
-            _ctx.users.Add(user);
-            Save(); 
+            await _ctx.users.AddAsync(user);
+            await SaveAsync(); 
         }
 
-        public void DeleteUser(int UserId)
+        public async Task DeleteUserAsync(int UserId)
         {
-            var user = GetUserById(UserId);
+            var user = await GetUserByIdAsync(UserId);
             _ctx.users.Remove(user);
+            await SaveAsync();
         }
 
         public IEnumerable<User> GetAllUsers()
@@ -49,37 +51,38 @@ namespace Infra.Data.Repository
             return users;
         }
 
-        public User? GetUserByEmailOrMobile(string emailMobile)
+        public async Task<User?> GetUserByEmailOrMobileAsync(string emailMobile)
         {
-            var user = _ctx.users.FirstOrDefault(u => u.Email == emailMobile || u.PhoneNumber == emailMobile);
+            var user = await _ctx.users.FirstOrDefaultAsync(u => u.Email == emailMobile || u.PhoneNumber == emailMobile);
             
             return user;
         }
 
-        public User GetUserById(int Id)
+        public async Task<User?> GetUserByIdAsync(int Id)
         {
-            var user = _ctx.users.Find(Id);
+            var user = await _ctx.users.FindAsync(Id);
+
             return user;
         }
 
-        public bool IsExistUser(string email, string phoneNumber)
+        public async Task<bool> IsExistUserAsync(string email, string phoneNumber)
         {
-            return _ctx.users.Any(u => u.Email == email || u.PhoneNumber == phoneNumber);
+            return await _ctx.users.AnyAsync(u => u.Email == email || u.PhoneNumber == phoneNumber);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            _ctx.SaveChanges();
+            await _ctx.SaveChangesAsync();
         }
 
-        public void UpdateUser(User user)
+        public async Task UpdateUserAsync(User user)
         {
-            var User = GetUserById(user.UserId);
+            var User = await GetUserByIdAsync(user.UserId);
 
             User.FullName = user.FullName;
             User.Email = user.Email;
 
-            Save();
+            await SaveAsync();
         }
     }
 }

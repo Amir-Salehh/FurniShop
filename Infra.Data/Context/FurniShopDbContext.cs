@@ -22,7 +22,7 @@ namespace Infra.Data.Context
         public DbSet<Address> addresses { get; set; }
         public DbSet<CartItem> cartItems { get; set; }
         public DbSet<Category> categories { get; set; }
-        public DbSet<ProductFeature> productsFeature { get; set; }
+        public DbSet<ProductDetail> productDetails { get; set; }
         public DbSet<Review> reviews { get; set; }
     }
 }

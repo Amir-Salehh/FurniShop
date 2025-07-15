@@ -11,10 +11,10 @@ namespace FurniShop.Domain.Models
     public class Product
     {
         [Key]
-        public int Product_Id { get; set; }
+        public int ProductId { get; set; }
 
         [ForeignKey("Category")]
-        public int Category_Id  { get; set; }
+        public int CategoryId  { get; set; }
         public ICollection<Category> Categories { get; set; }
 
         [ForeignKey("DiscountCode")]

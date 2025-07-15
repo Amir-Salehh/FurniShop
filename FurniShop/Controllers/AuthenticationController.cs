@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using FurniShop.Application.ViewModels.Auth;
+using System.Threading.Tasks;
 
 
 namespace FurniShop.Controllers
@@ -24,24 +25,26 @@ namespace FurniShop.Controllers
             return View();
         }
 
-        public IActionResult LoginPost(LoginViewModel model)
+        public async Task<IActionResult> LoginPost(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            if (!_userService.CheckExist(model.EmailPhone))
+            if (!await _userService.CheckExistAsync(model.EmailPhone))
             {
                 TempData["Message"] = "ایمیل یا شماره تلفن وجود ندارد";
                 return RedirectToAction("Login");
             }
-
-            if (!_userService.CheckLogin(model.EmailPhone, model.Password, out var user)) 
+            var result = await _userService.CheckLoginAsync(model.EmailPhone, model.Password);
+            if (! result.IsValid)
             {
                 TempData["Message"] = "رمز عبور اشتباه میباشد";
                 return RedirectToAction("Login");
             }
+
+            var user = result.user;
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
@@ -71,7 +74,7 @@ namespace FurniShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterPost(RegisterViewModel model)
+        public async Task<IActionResult> RegisterPost(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -90,8 +93,7 @@ namespace FurniShop.Controllers
                 saltpassword = salt,
                 PhoneNumber = model.PhoneNumber,
             };
-
-            if (_userService.CheckUser(model.Email, model.PhoneNumber))
+            if ( await _userService.CheckUserAsync(model.Email, model.PhoneNumber))
             {
                 TempData["Message"] = "ایمیل یا شماره تلفن وجود دارد";
                 return RedirectToAction("Register");

@@ -10,13 +10,13 @@ namespace FurniShop.Domain.Interfaces
     public interface IUserRepository
     {
         public IEnumerable<User> GetAllUsers();
-        public User GetUserById(int Id);
-        public User? GetUserByEmailOrMobile(string emailMobile);
-        public void CreateNewUser(User user);
-        public void UpdateUser(User user);
-        public void DeleteUser(int Id);
-        public void Save();
-        public bool IsExistUser(string email, string mobilePhone);
-        public bool CheckExistUser(string emailPhone);
+        public Task<User?> GetUserByIdAsync(int Id);
+        public Task<User?> GetUserByEmailOrMobileAsync(string emailMobile);
+        public Task CreateNewUserAsync(User user);
+        public Task UpdateUserAsync(User user);
+        public Task DeleteUserAsync(int Id);
+        public Task SaveAsync();
+        public Task<bool> IsExistUserAsync(string email, string mobilePhone);
+        public Task<bool> CheckExistUserAsync(string emailPhone);
     }
 }

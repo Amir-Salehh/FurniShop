@@ -23,31 +23,33 @@ namespace FurniShop.Application.Services
             _userRepository = userRepository;
         }
 
-        public bool CheckExist(string EmailMobile)
+        public async Task<bool> CheckExistAsync(string EmailMobile)
         {
-            return _userRepository.CheckExistUser(EmailMobile);
+            return await _userRepository.CheckExistUserAsync(EmailMobile);
         }
 
-        public bool CheckLogin(string emailPhone, string password, out User user)
+        public async Task<(bool IsValid, User? user)> CheckLoginAsync(string emailPhone, string password)
         {
-            user = _userRepository.GetUserByEmailOrMobile(emailPhone);
+            var user = await _userRepository.GetUserByEmailOrMobileAsync(emailPhone);
 
             if (user == null)
-                return false;
+                return (false, null);
 
             string hashedPassword = PasswordHelper.HashPasswordBase64(password.Trim(), user.saltpassword);
 
-            return string.Equals(hashedPassword, user.Password, StringComparison.Ordinal);
+            bool IsValid = string.Equals(hashedPassword, user.Password, StringComparison.Ordinal);
+
+            return (IsValid, user);
         }
 
-        public bool CheckUser(string email, string PhoneNumber)
+        public async Task<bool> CheckUserAsync(string email, string PhoneNumber)
         {
-            return _userRepository.IsExistUser(email.Trim().ToLower(), PhoneNumber);
+            return await _userRepository.IsExistUserAsync(email.Trim().ToLower(), PhoneNumber);
         }
 
         public void RegisterUser(User user)
         {
-            _userRepository.CreateNewUser(user);
+            _userRepository.CreateNewUserAsync(user);
         }
     }
 }

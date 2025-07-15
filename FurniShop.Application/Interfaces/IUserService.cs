@@ -10,9 +10,9 @@ namespace FurniShop.Application.Interfaces
 {
     public interface IUserService
     {
-        bool CheckUser(string email, string PhoneNumber);
-        bool CheckExist(string EmailMobile);
+        Task<bool> CheckUserAsync(string email, string PhoneNumber);
+        Task<bool> CheckExistAsync(string EmailMobile);
         void RegisterUser(User user);
-        bool CheckLogin(string emailMobile, string password, out User user);
+        Task<(bool IsValid, User? user)> CheckLoginAsync(string emailMobile, string password);
     }
 }

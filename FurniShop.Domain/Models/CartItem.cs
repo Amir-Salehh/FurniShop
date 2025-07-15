@@ -19,10 +19,10 @@ namespace FurniShop.Domain.Models
 
         [ForeignKey("ShoppingCart")]
         public int Cart_Id { get; set; }
-        public ShoppingCart ShoppingCart { get; set; }
+        public ShoppingCart? ShoppingCart { get; set; }
 
         [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
     }
 }
