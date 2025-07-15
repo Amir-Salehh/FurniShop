@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,13 +14,15 @@ namespace FurniShop.Domain.Models
         public int ReviewId { get; set; }
         public int Rating { get; set; }
         public string Comment { get; set; }
-        public DateTime CommentedAt { get; set; }
+        public DateTime Created_At { get; set; }
 
-        // FK
-        public int ProductId { get; set; }
+        [ForeignKey("Product")]
+        public int Product_Id { get; set; }
         public Product Product { get; set; }
 
-        public int UserId { get; set; }
-        public User user { get; set; }
+        [ForeignKey("User")]
+        public int User_Id { get; set; }
+        public User User { get; set; }
+
     }
 }

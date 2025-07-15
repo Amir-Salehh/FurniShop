@@ -8,21 +8,16 @@ using System.Threading.Tasks;
 
 namespace FurniShop.Domain.Models
 {
-    public class CartItem
+    public class ProductDetail
     {
         [Key]
-        public int CartItemId { get; set; }
-
-        public int Quantity { get; set; }
-
-        public decimal UnitPrice { get; set; }
-
-        [ForeignKey("ShoppingCart")]
-        public int Cart_Id { get; set; }
-        public ShoppingCart ShoppingCart { get; set; }
+        public int Product_Detail_Id { get; set; }
 
         [ForeignKey("Product")]
-        public int ProductId { get; set; }
+        public int Product_Id { get; set; }
         public Product Product { get; set; }
+
+        public ICollection<ProductAttributeDetail> Attribute { get; set; }
+
     }
 }
