@@ -22,8 +22,8 @@ namespace Infra.Data.Repository
 
         public async Task<bool> CheckExistUserAsync(string emailPhone)
         {
-            bool checkEmail = await _ctx.users.AnyAsync(u => u.Email == emailPhone);
-            bool checkPhoneNumber = await _ctx.users.AnyAsync(u => u.PhoneNumber == emailPhone);
+            bool checkEmail = await _ctx.Users.AnyAsync(u => u.Email == emailPhone);
+            bool checkPhoneNumber = await _ctx.Users.AnyAsync(u => u.PhoneNumber == emailPhone);
             if (checkEmail || checkPhoneNumber)
             {
                 return true;
@@ -34,14 +34,14 @@ namespace Infra.Data.Repository
 
         public async Task CreateNewUserAsync(User user)
         {
-            await _ctx.users.AddAsync(user);
+            await _ctx.Users.AddAsync(user);
             await SaveAsync(); 
         }
 
         public async Task DeleteUserAsync(int UserId)
         {
             var user = await GetUserByIdAsync(UserId);
-            _ctx.users.Remove(user);
+            _ctx.Users.Remove(user);
             await SaveAsync();
         }
 
@@ -53,21 +53,21 @@ namespace Infra.Data.Repository
 
         public async Task<User?> GetUserByEmailOrMobileAsync(string emailMobile)
         {
-            var user = await _ctx.users.FirstOrDefaultAsync(u => u.Email == emailMobile || u.PhoneNumber == emailMobile);
+            var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == emailMobile || u.PhoneNumber == emailMobile);
             
             return user;
         }
 
         public async Task<User?> GetUserByIdAsync(int Id)
         {
-            var user = await _ctx.users.FindAsync(Id);
+            var user = await _ctx.Users.FindAsync(Id);
 
             return user;
         }
 
         public async Task<bool> IsExistUserAsync(string email, string phoneNumber)
         {
-            return await _ctx.users.AnyAsync(u => u.Email == email || u.PhoneNumber == phoneNumber);
+            return await _ctx.Users.AnyAsync(u => u.Email == email || u.PhoneNumber == phoneNumber);
         }
 
         public async Task SaveAsync()

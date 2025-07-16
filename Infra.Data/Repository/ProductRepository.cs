@@ -19,14 +19,14 @@ namespace Infra.Data.Repository
 
         public void CreatProduct(Product product)
         {
-            _ctx.products.Add(product);
+            _ctx.Products.Add(product);
             Save();
         }
 
         public void DeleteProduct(int id)
         {
             var product = GetById(id);
-            _ctx.products.Remove(product);
+            _ctx.Products.Remove(product);
             Save();
         }
 
@@ -38,7 +38,7 @@ namespace Infra.Data.Repository
 
         public Product GetById(int id)
         {
-            var product = _ctx.products.Find(id);
+            var product = _ctx.Products.Find(id);
             return product;
         }
 
@@ -49,7 +49,7 @@ namespace Infra.Data.Repository
 
         public void UpdateProduct(Product Product)
         {
-            var product = _ctx.products.Find(Product.ProductId);
+            var product = _ctx.Products.Find(Product.ProductId);
 
             product.ProductName = Product.ProductName;
             product.ProductDescription = Product.ProductDescription;

@@ -12,7 +12,7 @@ namespace FurniShop.Domain.Models
         [Key]
         public int Attribute_Id { get; set; }
 
-        public string Attribute_Name { get; set; }
+        public string? Attribute_Name { get; set; }
 
     }
 }

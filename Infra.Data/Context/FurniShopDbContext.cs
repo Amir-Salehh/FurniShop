@@ -16,13 +16,26 @@ namespace Infra.Data.Context
 
         }
 
-        public DbSet<User> users { get; set; }
-        public DbSet<Order> orders { get; set; }
-        public DbSet<Product> products { get;set; }
-        public DbSet<Address> addresses { get; set; }
-        public DbSet<CartItem> cartItems { get; set; }
-        public DbSet<Category> categories { get; set; }
-        public DbSet<ProductDetail> productDetails { get; set; }
-        public DbSet<Review> reviews { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<BankCartInformation> BankCarts { get; set; }
+        public DbSet<Buyer> Buyers { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CheckLevelLog> CheckLevelLogs { get; set; }
+        public DbSet<DiscountCode> DiscountCodes { get; set; }
+        public DbSet<Level> Levels { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductAttribute> ProductAttributes { get; set; }
+        public DbSet<ProductAttributeDetail> ProductAttributeDetails { get; set; }
+        public DbSet<ProductDetail> ProductDetails { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
+        public DbSet<SellerPayout> SellerPayouts { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<User> Users { get; set; }
+
     }
 }

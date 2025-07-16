@@ -32,13 +32,12 @@ namespace FurniShop.Domain.Models
 
         public ICollection<Review>? Reviews { get; set; }
 
-        public Role role { get; set; }
-
-        public enum Role
-        {
-            Admin = 0,
-            Seller = 1,
-            Buyer = 2
-        }
+        public Role role { get; set; } = Role.Buyer;
+    }
+    public enum Role
+    {
+        Admin = 0,
+        Seller = 1,
+        Buyer = 2
     }
 }

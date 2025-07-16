@@ -24,6 +24,7 @@ namespace FurniShop.Application.Security
 
         public static string HashPasswordBase64(string password, byte[] salt)
         {
+
             var hash = HashPassword(password, salt);
             return Convert.ToBase64String(hash);
         }

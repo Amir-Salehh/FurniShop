@@ -19,6 +19,6 @@ namespace FurniShop.Domain.Models
         [ForeignKey("Product_Attribute")]
         public int Product_Attribute { get; set; }
 
-        public string Value { get; set; }
+        public string Value { get; set; } = null!;
     }
 }

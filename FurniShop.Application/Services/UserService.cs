@@ -2,25 +2,22 @@
 using FurniShop.Application.Security;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FurniShop.Application.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IConfiguration _config;
+        public UserService(IUserRepository userRepository, IConfiguration config)
         {
             _userRepository = userRepository;
+            _config = config;
         }
 
         public async Task<bool> CheckExistAsync(string EmailMobile)
@@ -28,18 +25,41 @@ namespace FurniShop.Application.Services
             return await _userRepository.CheckExistUserAsync(EmailMobile);
         }
 
-        public async Task<(bool IsValid, User? user)> CheckLoginAsync(string emailPhone, string password)
+        public async Task<string> CheckLoginAsync(string emailPhone, string password, bool remmemberMe)
         {
             var user = await _userRepository.GetUserByEmailOrMobileAsync(emailPhone);
 
             if (user == null)
-                return (false, null);
+                throw new Exception("User not found.");
 
             string hashedPassword = PasswordHelper.HashPasswordBase64(password.Trim(), user.saltpassword);
 
-            bool IsValid = string.Equals(hashedPassword, user.Password, StringComparison.Ordinal);
+            if (!string.Equals(hashedPassword, user.Password, StringComparison.Ordinal)) throw new Exception("Incorrect password.");
 
-            return (IsValid, user);
+            return GenerateToken(user, remmemberMe);
+        }
+
+        private string GenerateToken(User user, bool remmemberMe)
+        {
+            var key = Encoding.UTF8.GetBytes(_config["Jwt:key"]!);
+
+            var expires = remmemberMe ? 7 * 24 * 60 : int.Parse(_config["Jwt:EpiresInMinutes"]!);
+            
+            var claims = new[]
+                {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, user.role.ToString())
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(expires),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public async Task<bool> CheckUserAsync(string email, string PhoneNumber)
@@ -47,9 +67,9 @@ namespace FurniShop.Application.Services
             return await _userRepository.IsExistUserAsync(email.Trim().ToLower(), PhoneNumber);
         }
 
-        public void RegisterUser(User user)
+        public async Task RegisterUserAsync(User user)
         {
-            _userRepository.CreateNewUserAsync(user);
+            await _userRepository.CreateNewUserAsync(user);
         }
     }
 }

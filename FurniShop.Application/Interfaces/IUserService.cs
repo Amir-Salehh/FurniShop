@@ -1,5 +1,4 @@
-﻿using FurniShop.Application.ViewModels;
-using FurniShop.Domain.Models;
+﻿using FurniShop.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +10,11 @@ namespace FurniShop.Application.Interfaces
     public interface IUserService
     {
         Task<bool> CheckUserAsync(string email, string PhoneNumber);
+        Task RegisterUserAsync(User user);
         Task<bool> CheckExistAsync(string EmailMobile);
-        void RegisterUser(User user);
-        Task<(bool IsValid, User? user)> CheckLoginAsync(string emailMobile, string password);
+
+        Task<string> CheckLoginAsync(string emailMobile, string password, bool remmemberMe);
+
+        
     }
 }

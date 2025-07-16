@@ -12,6 +12,6 @@ namespace FurniShop.Domain.Models
     {
         [Key,ForeignKey("User")]
         public int User_Id { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = null!;
     }
 }

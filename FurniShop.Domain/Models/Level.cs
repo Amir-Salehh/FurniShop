@@ -12,9 +12,9 @@ namespace FurniShop.Domain.Models
         [Key]
         public int LevelId { get; set; }
 
-        public string LevelDetail { get; set; }
+        public string LevelDetail { get; set; } = null!;
 
-        public string MinSales { get; set; }
+        public string MinSales { get; set; } = null!;
 
         public decimal Discount_Percent { get; set; }
 

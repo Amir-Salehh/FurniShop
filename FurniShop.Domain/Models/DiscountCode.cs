@@ -19,7 +19,7 @@ namespace FurniShop.Domain.Models
 
         public int SellerId { get; set; }
 
-        public string Code { get; set; }
+        public string Code { get; set; } = null!;
 
         public decimal Discount {  get; set; }
 

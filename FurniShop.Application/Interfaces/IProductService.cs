@@ -1,5 +1,4 @@
-﻿using FurniShop.Application.ViewModels.Product;
-using FurniShop.Domain.Models;
+﻿using FurniShop.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

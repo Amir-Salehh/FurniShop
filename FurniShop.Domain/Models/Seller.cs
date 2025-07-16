@@ -12,8 +12,8 @@ namespace FurniShop.Domain.Models
     {
         [Key, ForeignKey("User")]
         public int UserId { get; set; }
-        public User user { get; set; }
+        public User user { get; set; } = null!;
 
-        public ICollection<BankCartInformation> Banks { get; set; }
+        public ICollection<BankCartInformation> Banks { get; set; } = null!;
     }
 }

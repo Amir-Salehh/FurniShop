@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FurniShop.Application.ViewModels.Auth
+namespace FurniShop.Application.DTOs.Auth
 {
-    public class LoginViewModel : IValidatableObject
+    public class LoginRequest : IValidatableObject
     {
         [Required(ErrorMessage = "این پارامتر نمیتواند خالی باشد")]
         [StringLength(255)]
-        public string EmailPhone { get; set; }
+        public string EmailPhone { get; set; } = null!;
 
         [Required(ErrorMessage = "این پارامتر نمیتواند خالی باشد")]
         [StringLength(255)]
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
 
         public bool RememberMe { get; set; } = false;
 

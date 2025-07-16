@@ -15,7 +15,7 @@ namespace FurniShop.Domain.Models
 
         [ForeignKey("Product")]
         public int Product_Id { get; set; }
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
 
         public ICollection<ProductAttributeDetail> Attribute { get; set; }
 

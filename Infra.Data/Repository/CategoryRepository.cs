@@ -25,20 +25,20 @@ namespace Infra.Data.Repository
 
         public void CreateCategory(Category category)
         {
-            _ctx.categories.Add(category);
+            _ctx.Categories.Add(category);
             Save();
         }
 
         public void DeleteCategory(int Categoryid)
         {
             var category = GetCategoryById(Categoryid);
-            _ctx.categories.Remove(category); 
+            _ctx.Categories.Remove(category); 
             Save();
         }
 
         public Category GetCategoryById(int Categoryid)
         {
-            var category = _ctx.categories.Find(Categoryid);
+            var category = _ctx.Categories.Find(Categoryid);
             return category;
         }
 

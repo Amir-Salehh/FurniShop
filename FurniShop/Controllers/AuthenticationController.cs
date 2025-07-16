@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
-using FurniShop.Application.ViewModels.Auth;
 using System.Threading.Tasks;
+using FurniShop.Application.DTOs.Auth;
 
 
 namespace FurniShop.Controllers
@@ -25,7 +25,7 @@ namespace FurniShop.Controllers
             return View();
         }
 
-        public async Task<IActionResult> LoginPost(LoginViewModel model)
+        public async Task<IActionResult> LoginPost(LoginRequest model)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace FurniShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterPost(RegisterViewModel model)
+        public async Task<IActionResult> RegisterPost(RegisterRequest model)
         {
             if (!ModelState.IsValid)
             {

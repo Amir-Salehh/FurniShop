@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,17 +10,18 @@ namespace FurniShop.Domain.Models
 {
     public class ShoppingCart
     {
+        [Key]
         public int Cart_Id { get; set; }
 
         [ForeignKey("Buyer")]
         public int Buy_User_Id { get; set; }
-        public Buyer Buyer { get; set; }
+        public Buyer Buyer { get; set; } = null!;
 
         public DateTime Created_At { get; set; }
 
         public DateTime Updated_At { get; set; }
 
-        public ICollection<CartItem> Cart_Items { get; set; }
+        public ICollection<CartItem> Cart_Items { get; set; } = null!;
 
     }
 }

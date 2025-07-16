@@ -13,16 +13,16 @@ namespace FurniShop.Domain.Models
         [Key]
         public int ReviewId { get; set; }
         public int Rating { get; set; }
-        public string Comment { get; set; }
+        public string Comment { get; set; } = null!;
         public DateTime Created_At { get; set; }
 
         [ForeignKey("Product")]
         public int Product_Id { get; set; }
-        public Product Product { get; set; }
+        public Product Product { get; set; } = null!;
 
         [ForeignKey("User")]
         public int User_Id { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
     }
 }

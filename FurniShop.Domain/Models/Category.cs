@@ -12,12 +12,12 @@ namespace FurniShop.Domain.Models
         [Key]
         public int CategoryId { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         public int? ParentId { get; set; }
 
         public Category? Parent { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
     }
 }
