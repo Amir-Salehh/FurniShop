@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace FurniShop.Domain.Models
 {
-    public class Seller
+    public class UserRoles
     {
-        [Key, ForeignKey("User")]
+        [Key]
         public int UserId { get; set; }
-        public User user { get; set; } = null!;
+        public User User { get; set; }
 
-        public ICollection<BankCartInformation> Banks { get; set; } = null!;
+        public int RoleId { get; set; }
+        public Roles Role { get; set; }
+
     }
 }

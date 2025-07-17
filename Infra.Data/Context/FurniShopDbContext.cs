@@ -17,9 +17,7 @@ namespace Infra.Data.Context
         }
 
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<Admin> Admins { get; set; }
         public DbSet<BankCartInformation> BankCarts { get; set; }
-        public DbSet<Buyer> Buyers { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CheckLevelLog> CheckLevelLogs { get; set; }
@@ -32,10 +30,28 @@ namespace Infra.Data.Context
         public DbSet<ProductAttributeDetail> ProductAttributeDetails { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        public DbSet<Seller> Sellers { get; set; }
+        public DbSet<Roles> Roles { get; set; }
         public DbSet<SellerPayout> SellerPayouts { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRoles> UserRoles { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserRoles>().HasKey(ur => new {ur.UserId, ur.RoleId});
+
+            modelBuilder.Entity<UserRoles>()
+                .HasOne(ur => ur.User)
+                .WithMany(ur => ur.UserRoles)
+                .HasForeignKey(ur => ur.UserId);
+
+            modelBuilder.Entity<UserRoles>()
+                .HasOne(ur => ur.Role)
+                .WithMany(ur => ur.UserRoles)
+                .HasForeignKey(ur => ur.RoleId);
+
+        }
     }
 }

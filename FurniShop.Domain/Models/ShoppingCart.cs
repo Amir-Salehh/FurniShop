@@ -13,9 +13,9 @@ namespace FurniShop.Domain.Models
         [Key]
         public int Cart_Id { get; set; }
 
-        [ForeignKey("Buyer")]
-        public int Buy_User_Id { get; set; }
-        public Buyer Buyer { get; set; } = null!;
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
 
         public DateTime Created_At { get; set; }
 

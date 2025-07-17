@@ -45,11 +45,15 @@ namespace FurniShop.Application.Services
 
             var expires = remmemberMe ? 7 * 24 * 60 : int.Parse(_config["Jwt:EpiresInMinutes"]!);
             
-            var claims = new[]
-                {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.role.ToString())
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email)
             };
+
+            foreach (var userRole in user.UserRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole.Role.RoleName));
+            }
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],

@@ -9,9 +9,9 @@ namespace FurniShop.Domain.Models
         [Key]
         public int Log_Id { get; set; }
 
-        [ForeignKey("Seller")]
-        public int SellerId { get; set; }
-        public Seller Seller { get; set; } = null!;
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; } = null!;
 
         public decimal Total_Sales_This_Month { get; set; }
 

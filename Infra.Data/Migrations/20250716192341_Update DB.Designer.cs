@@ -4,6 +4,7 @@ using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Data.Migrations
 {
     [DbContext(typeof(FurniShopDbContext))]
-    partial class FurniShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250716192341_Update DB")]
+    partial class UpdateDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -516,23 +519,6 @@ namespace Infra.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Roles", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("FurniShop.Domain.Models.Seller", b =>
                 {
                     b.Property<int>("UserId")
@@ -645,6 +631,9 @@ namespace Infra.Data.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("role")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("saltpassword")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
@@ -652,21 +641,6 @@ namespace Infra.Data.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("FurniShop.Domain.Models.UserRoles", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.Address", b =>
@@ -853,25 +827,6 @@ namespace Infra.Data.Migrations
                     b.Navigation("Buyer");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.UserRoles", b =>
-                {
-                    b.HasOne("FurniShop.Domain.Models.Roles", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FurniShop.Domain.Models.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("FurniShop.Domain.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -894,11 +849,6 @@ namespace Infra.Data.Migrations
                     b.Navigation("Attribute");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Roles", b =>
-                {
-                    b.Navigation("UserRoles");
-                });
-
             modelBuilder.Entity("FurniShop.Domain.Models.Seller", b =>
                 {
                     b.Navigation("Banks");
@@ -914,8 +864,6 @@ namespace Infra.Data.Migrations
                     b.Navigation("Addresses");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
