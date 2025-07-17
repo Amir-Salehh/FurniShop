@@ -10,7 +10,8 @@ namespace FurniShop.Application.Interfaces
 {
     public interface IProductService
     {
-        public List<Product> GetProducts();
+        public List<Product> GetAll();
+        public List<Product> GetProducts(int UserId);
 
         public Task CreateProductAsync (Product product);
 

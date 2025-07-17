@@ -1,11 +1,7 @@
 ﻿using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using Infra.Data.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Data.Repository
 {
@@ -17,44 +13,45 @@ namespace Infra.Data.Repository
             _ctx = ctx;   
         }
 
-        public IEnumerable<Category> Categories()
+        public async Task CreateCategory(Category category)
         {
-            var categories = new List<Category>();
-            return categories;
+            await _ctx.Categories.AddAsync(category);
+            await Save();
         }
 
-        public void CreateCategory(Category category)
+        public async Task DeleteCategory(int CategoryId)
         {
-            _ctx.Categories.Add(category);
-            Save();
+            var category = await GetCategoryById(CategoryId);
+            _ctx.Categories.Remove(category);
+            await Save();
         }
 
-        public void DeleteCategory(int Categoryid)
+        public IEnumerable<Category> GetAllCategories()
         {
-            var category = GetCategoryById(Categoryid);
-            _ctx.Categories.Remove(category); 
-            Save();
+            return new List<Category>().AsEnumerable();
         }
 
-        public Category GetCategoryById(int Categoryid)
+        public async Task<Category?> GetCategoryById(int CategoryId)
         {
-            var category = _ctx.Categories.Find(Categoryid);
-            return category;
+            var Category = await _ctx.Categories.FindAsync(CategoryId);
+
+            return Category;
         }
 
-        public void Save()
+        public async Task<bool> GetCategoryByName(string categcoryName)
         {
-            _ctx.SaveChanges();
+            return await _ctx.Categories.AnyAsync(c => c.Name == categcoryName);
         }
 
-        public void UpdateCategory(Category Category)
+        public async Task Save()
         {
-            var category = GetCategoryById(Category.CategoryId);
+            await _ctx.SaveChangesAsync();
+        }
 
-            category.Name = Category.Name;
-
-            Save();
-
+        public async Task UpdateCategory(Category category)
+        {
+            _ctx.Categories.Update(category);
+            await Save();
         }
     }
 }

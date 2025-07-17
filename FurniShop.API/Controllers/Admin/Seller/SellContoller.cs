@@ -4,6 +4,7 @@ using FurniShop.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FurniShop.API.Controllers.Admin.Seller
 {
@@ -18,6 +19,22 @@ namespace FurniShop.API.Controllers.Admin.Seller
             _productService = productService;
         }
 
+        #region Get All Products
+        [HttpGet("my-Products")]
+        public IActionResult GetAllProducts()
+        {
+            var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+            var userId = int.Parse(userIdClaim.Value);
+            var products =  _productService.GetProducts(userId).ToList();
+            return Ok(products);
+        }
+        #endregion
+
+        #region Create Product
         [HttpPost]
         public async Task<IActionResult> CreateProductAsync([FromBody] ProductRequest request)
         {
@@ -41,6 +58,7 @@ namespace FurniShop.API.Controllers.Admin.Seller
                 Stock = request.Stock,
                 UserId = request.UserId,
                 ImageUrl = request.ImageUrl,
+                Category = new Category { Name = request.CategoryName },
             };
 
             if(!await _productService.CheckExistProductAsync(productNumber)) 
@@ -59,5 +77,8 @@ namespace FurniShop.API.Controllers.Admin.Seller
             }
 
         }
+        #endregion
+
+
     }
 }

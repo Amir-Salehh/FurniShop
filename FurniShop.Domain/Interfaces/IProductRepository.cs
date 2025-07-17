@@ -9,6 +9,7 @@ namespace FurniShop.Domain.Interfaces
 {
     public interface IProductRepository
     {
+        public IEnumerable<Product> GetProducts(int userId);
         public IEnumerable<Product> GetAll();
 
         public Task<Product> GetByIdAsync(int id);

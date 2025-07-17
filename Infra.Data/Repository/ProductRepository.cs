@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,9 +32,9 @@ namespace Infra.Data.Repository
             await SaveAsync();
         }
 
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<Product> GetProducts(int userId)
         {
-             List<Product> products = new List<Product>();
+            var products =  _ctx.Products.Where(p => p.UserId == userId);
             return products.AsEnumerable();
         }
 
@@ -48,6 +49,11 @@ namespace Infra.Data.Repository
             var product = await _ctx.Products.FirstOrDefaultAsync(p => p.ProductNumber == number);
 
             return product;
+        }
+
+        public IEnumerable<Product> GetAll()
+        {
+            return new List<Product>().AsEnumerable();
         }
 
         public async Task SaveAsync()

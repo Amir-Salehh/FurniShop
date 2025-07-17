@@ -9,16 +9,17 @@ namespace FurniShop.Domain.Interfaces
 {
     public interface ICategoryRepository
     {
-        public IEnumerable<Category> Categories();
+        public IEnumerable<Category> GetAllCategories();
 
-        public Category GetCategoryById(int Categoryid);
+        public Task CreateCategory(Category category);
 
-        public void CreateCategory(Category category);
+        public Task<Category?> GetCategoryById(int CategoryId);
 
-        public void UpdateCategory(Category category);
+        public Task UpdateCategory(Category category);
 
-        public void DeleteCategory(int Categoryid);
+        public Task DeleteCategory(int CategoryId);
 
-        public void Save();
+        public Task Save();
+        Task<bool> GetCategoryByName(string categcoryName);
     }
 }

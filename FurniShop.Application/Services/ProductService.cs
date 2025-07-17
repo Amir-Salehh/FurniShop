@@ -23,7 +23,7 @@ namespace FurniShop.Application.Services
 
         public async Task CreateProductAsync(Product product)
         {
-                await _productRepository.CreatProductAsync(product);
+            await _productRepository.CreatProductAsync(product);
         }
 
         public async Task DeleteProduct (int productId)
@@ -42,7 +42,7 @@ namespace FurniShop.Application.Services
         public List<Product> GetProducts()
         {
             var products = _productRepository.GetAll();
-            return products.ToList();
+            return (List<Product>)products;
         }
 
         public decimal AddDiscount(decimal OrginalPrice, decimal? discount, DiscountType DiscountType)
@@ -63,6 +63,16 @@ namespace FurniShop.Application.Services
         public async Task UpdateProductAsync(Product product)
         {
             await _productRepository.UpdateProduct(product);
+        }
+
+        public List<Product> GetAll()
+        {
+            return (List<Product>)_productRepository.GetAll();
+        }
+
+        public List<Product> GetProducts(int UserId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
