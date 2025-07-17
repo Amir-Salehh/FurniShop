@@ -21,6 +21,11 @@ namespace FurniShop.API.Controllers.Admin.Seller
         [HttpPost]
         public async Task<IActionResult> CreateProductAsync([FromBody] ProductRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             decimal discounedPrice = _productService.AddDiscount(request.OrginalPrice, request.Discount, request.DiscountType);
 
             string productNumber = _productService.GenerateProductNumber();

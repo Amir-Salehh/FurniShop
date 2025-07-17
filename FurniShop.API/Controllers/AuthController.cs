@@ -17,7 +17,7 @@ namespace FurniShop.API.Controllers
             _service = service;
         }
 
-
+        #region Register
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -36,6 +36,15 @@ namespace FurniShop.API.Controllers
             string HashedPassword = PasswordHelper.HashPasswordBase64(request.Password, salt);
 
 
+            var userRoles = new List<UserRoles>
+                {
+                    new UserRoles{ RoleId = 3 },
+                };
+
+            if (request.CheckSeller)
+            {
+                userRoles.Add(new UserRoles { RoleId = 2 });
+            }
             var user = new User
             {
                 FullName = request.FullName,
@@ -45,16 +54,16 @@ namespace FurniShop.API.Controllers
                 Password = HashedPassword,
                 saltpassword = salt,
                 CreatedAt = DateTime.UtcNow,
-                UserRoles = new List<UserRoles>
-                {
-                    new UserRoles{ RoleId = 3 }
-                }
+                UserRoles = userRoles
             };
+            
 
             await _service.RegisterUserAsync(user);
             return Created();
         }
+        #endregion
 
+        #region Login
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest request)
         {
@@ -73,5 +82,6 @@ namespace FurniShop.API.Controllers
             return Ok(new { Token=token });
 
         }
+        #endregion
     }
 }

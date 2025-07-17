@@ -31,5 +31,7 @@ namespace FurniShop.Application.DTOs.Auth
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = null!;
 
+        public bool CheckSeller { get; set; } = false;
+
     }
 }

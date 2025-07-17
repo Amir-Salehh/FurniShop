@@ -19,6 +19,7 @@ namespace FurniShop.Application.DTOs.Auth
 
         public bool RememberMe { get; set; } = false;
 
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!IsEmailValid(EmailPhone) && !IsPhoneNumberValid(EmailPhone))
