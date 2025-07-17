@@ -35,6 +35,7 @@ namespace FurniShop.API.Controllers
 
             string HashedPassword = PasswordHelper.HashPasswordBase64(request.Password, salt);
 
+
             var user = new User
             {
                 FullName = request.FullName,
@@ -43,7 +44,11 @@ namespace FurniShop.API.Controllers
                 Addresses = null,
                 Password = HashedPassword,
                 saltpassword = salt,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UserRoles = new List<UserRoles>
+                {
+                    new UserRoles{ RoleId = 3 }
+                }
             };
 
             await _service.RegisterUserAsync(user);

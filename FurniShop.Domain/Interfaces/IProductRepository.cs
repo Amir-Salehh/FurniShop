@@ -11,14 +11,15 @@ namespace FurniShop.Domain.Interfaces
     {
         public IEnumerable<Product> GetAll();
 
-        public Product GetById(int id);
+        public Task<Product> GetByIdAsync(int id);
+        public Task<Product> GetByNumber(string number);
 
-        public void CreatProduct(Product product);
+        public Task CreatProductAsync(Product product);
 
-        public void UpdateProduct(Product product);
+        public Task UpdateProduct(Product product);
 
-        public void DeleteProduct(int id);
+        public Task DeleteProduct(int id);
 
-        public void Save();
+        public Task SaveAsync();
     }
 }

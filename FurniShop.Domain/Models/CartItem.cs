@@ -17,8 +17,8 @@ namespace FurniShop.Domain.Models
 
         public decimal UnitPrice { get; set; }
 
-        [ForeignKey("ShoppingCart")]
-        public int Cart_Id { get; set; }
+        [ForeignKey("ShppingCart")]
+        public int CartId { get; set; }
         public ShoppingCart? ShoppingCart { get; set; }
 
         [ForeignKey("Product")]

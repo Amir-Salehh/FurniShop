@@ -1,6 +1,7 @@
 ﻿using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,47 +18,55 @@ namespace Infra.Data.Repository
             _ctx = ctx;
         }
 
-        public void CreatProduct(Product product)
+        public async Task CreatProductAsync(Product product)
         {
-            _ctx.Products.Add(product);
-            Save();
+            await _ctx.Products.AddAsync(product);
+            await SaveAsync();
         }
 
-        public void DeleteProduct(int id)
+        public async Task DeleteProduct(int id)
         {
-            var product = GetById(id);
+            var product = await GetByIdAsync(id);
             _ctx.Products.Remove(product);
-            Save();
+            await SaveAsync();
         }
 
         public IEnumerable<Product> GetAll()
         {
-            List<Product> products = new List<Product>();
+             List<Product> products = new List<Product>();
             return products.AsEnumerable();
         }
 
-        public Product GetById(int id)
+        public async Task<Product> GetByIdAsync(int id)
         {
-            var product = _ctx.Products.Find(id);
+            var product = await _ctx.Products.FindAsync(id);
             return product;
         }
 
-        public void Save()
+        public async Task<Product> GetByNumber(string number)
         {
-            _ctx.SaveChanges();
+            var product = await _ctx.Products.FirstOrDefaultAsync(p => p.ProductNumber == number);
+
+            return product;
         }
 
-        public void UpdateProduct(Product Product)
+        public async Task SaveAsync()
         {
-            var product = _ctx.Products.Find(Product.ProductId);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task UpdateProduct(Product Product)
+        {
+            var product = await _ctx.Products.FindAsync(Product.ProductId);
 
             product.ProductName = Product.ProductName;
             product.ProductDescription = Product.ProductDescription;
-            product.Price = Product.Price;
+            product.OrginalPrice = Product.OrginalPrice;
             product.Stock = Product.Stock;
             product.ImageUrl = Product.ImageUrl;
 
-            Save();
+            await SaveAsync();
         }
+
     }
 }

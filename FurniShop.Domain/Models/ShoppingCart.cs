@@ -21,7 +21,7 @@ namespace FurniShop.Domain.Models
 
         public DateTime Updated_At { get; set; }
 
-        public ICollection<CartItem> Cart_Items { get; set; } = null!;
+        public ICollection<CartItem> CartItems { get; set; } = null!;
 
     }
 }

@@ -15,6 +15,8 @@ namespace FurniShop.Application.Interfaces
 
         Task<string> CheckLoginAsync(string emailMobile, string password, bool remmemberMe);
 
+       
+
         
     }
 }

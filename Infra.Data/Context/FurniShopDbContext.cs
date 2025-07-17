@@ -52,6 +52,17 @@ namespace Infra.Data.Context
                 .WithMany(ur => ur.UserRoles)
                 .HasForeignKey(ur => ur.RoleId);
 
+            modelBuilder.Entity<CartItem>()
+            .HasOne(ci => ci.ShoppingCart)
+            .WithMany(sc => sc.CartItems)
+            .HasForeignKey(ci => ci.CartId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Review>()
+            .HasOne(ci => ci.User)
+            .WithMany(sc => sc.Reviews)
+            .HasForeignKey(ci => ci.User_Id)
+            .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

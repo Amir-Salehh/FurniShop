@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Data.Migrations
 {
     [DbContext(typeof(FurniShopDbContext))]
-    [Migration("20250717090336_Add Role table")]
-    partial class AddRoletable
+    [Migration("20250717092942_Add db")]
+    partial class Adddb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,24 +85,6 @@ namespace Infra.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Admin", b =>
-                {
-                    b.Property<int>("AdminId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"));
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AdminId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Admins");
-                });
-
             modelBuilder.Entity("FurniShop.Domain.Models.BankCartInformation", b =>
                 {
                     b.Property<int>("CartId")
@@ -130,19 +112,7 @@ namespace Infra.Data.Migrations
 
                     b.HasKey("CartId");
 
-                    b.HasIndex("SellerId");
-
                     b.ToTable("BankCarts");
-                });
-
-            modelBuilder.Entity("FurniShop.Domain.Models.Buyer", b =>
-                {
-                    b.Property<int>("User_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("User_Id");
-
-                    b.ToTable("Buyers");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.CartItem", b =>
@@ -153,7 +123,7 @@ namespace Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
 
-                    b.Property<int>("Cart_Id")
+                    b.Property<int>("CartId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
@@ -167,7 +137,7 @@ namespace Infra.Data.Migrations
 
                     b.HasKey("CartItemId");
 
-                    b.HasIndex("Cart_Id");
+                    b.HasIndex("CartId");
 
                     b.HasIndex("ProductId");
 
@@ -210,18 +180,18 @@ namespace Infra.Data.Migrations
                     b.Property<DateTime>("Checked_At")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SellerId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Total_Sales_This_Month")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Updated_At")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Log_Id");
 
-                    b.HasIndex("SellerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("CheckLevelLogs");
                 });
@@ -319,9 +289,6 @@ namespace Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order_Id"));
 
-                    b.Property<int>("BuyUserId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -337,9 +304,12 @@ namespace Infra.Data.Migrations
                     b.Property<DateTime>("Updated_At")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Order_Id");
 
-                    b.HasIndex("BuyUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -415,11 +385,16 @@ namespace Infra.Data.Migrations
                     b.Property<DateTime>("Updated_At")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("DiscountCodeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -536,24 +511,6 @@ namespace Infra.Data.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Seller", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<int>("UserId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Sellers");
-                });
-
             modelBuilder.Entity("FurniShop.Domain.Models.SellerPayout", b =>
                 {
                     b.Property<int>("PayoutId")
@@ -602,18 +559,18 @@ namespace Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Cart_Id"));
 
-                    b.Property<int>("Buy_User_Id")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Updated_At")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Cart_Id");
 
-                    b.HasIndex("Buy_User_Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingCarts");
                 });
@@ -679,43 +636,12 @@ namespace Infra.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Admin", b =>
-                {
-                    b.HasOne("FurniShop.Domain.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("FurniShop.Domain.Models.BankCartInformation", b =>
-                {
-                    b.HasOne("FurniShop.Domain.Models.Seller", null)
-                        .WithMany("Banks")
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FurniShop.Domain.Models.Buyer", b =>
-                {
-                    b.HasOne("FurniShop.Domain.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("FurniShop.Domain.Models.CartItem", b =>
                 {
                     b.HasOne("FurniShop.Domain.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany("Cart_Items")
-                        .HasForeignKey("Cart_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("FurniShop.Domain.Models.Product", "Product")
@@ -740,13 +666,13 @@ namespace Infra.Data.Migrations
 
             modelBuilder.Entity("FurniShop.Domain.Models.CheckLevelLog", b =>
                 {
-                    b.HasOne("FurniShop.Domain.Models.Seller", "Seller")
+                    b.HasOne("FurniShop.Domain.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("SellerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Seller");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.DiscountCode", b =>
@@ -760,13 +686,13 @@ namespace Infra.Data.Migrations
 
             modelBuilder.Entity("FurniShop.Domain.Models.Order", b =>
                 {
-                    b.HasOne("FurniShop.Domain.Models.Buyer", "Buyer")
+                    b.HasOne("FurniShop.Domain.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("BuyUserId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Buyer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.Payment", b =>
@@ -792,9 +718,17 @@ namespace Infra.Data.Migrations
                         .WithMany("Products")
                         .HasForeignKey("DiscountCodeId");
 
+                    b.HasOne("FurniShop.Domain.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
 
                     b.Navigation("Code");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.ProductAttributeDetail", b =>
@@ -826,7 +760,7 @@ namespace Infra.Data.Migrations
                     b.HasOne("FurniShop.Domain.Models.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -834,26 +768,15 @@ namespace Infra.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Seller", b =>
-                {
-                    b.HasOne("FurniShop.Domain.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("FurniShop.Domain.Models.ShoppingCart", b =>
                 {
-                    b.HasOne("FurniShop.Domain.Models.Buyer", "Buyer")
+                    b.HasOne("FurniShop.Domain.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("Buy_User_Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Buyer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.UserRoles", b =>
@@ -902,14 +825,9 @@ namespace Infra.Data.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Seller", b =>
-                {
-                    b.Navigation("Banks");
-                });
-
             modelBuilder.Entity("FurniShop.Domain.Models.ShoppingCart", b =>
                 {
-                    b.Navigation("Cart_Items");
+                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.User", b =>
