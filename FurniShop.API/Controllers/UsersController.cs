@@ -35,6 +35,11 @@ namespace FurniShop.API.Controllers
         [HttpGet("GetProfile")]
         public IActionResult GetProfile()
         {
+            if(User.FindFirst(ClaimTypes.NameIdentifier) == null)
+            {
+                return NotFound("لطفا لاگین کنید");
+            }
+
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var user = _userService.GetUserById(userId);

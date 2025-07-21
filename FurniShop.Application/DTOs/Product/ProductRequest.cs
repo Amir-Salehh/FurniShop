@@ -37,6 +37,9 @@ namespace FurniShop.Application.DTOs.Product
         [StringLength(5, MinimumLength = 5, ErrorMessage = "کد کالا باید 5 کاراکتر باشد")]
         public string ProductNumber { get; set; } = null!;
 
+        public List<string>? AtributeName { get; set; }
+        public List<string>? AtributeValue { get; set; }
+
     }
 
     public enum DiscountType

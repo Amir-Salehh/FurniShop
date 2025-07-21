@@ -20,7 +20,7 @@ namespace FurniShop.API.Controllers
 
 
         #region Get All Discount Codes
-        [HttpGet("GetAllCodes")]
+        [HttpGet("DiscountCodes")]
         [Authorize(Roles = "Admin")]
         public IActionResult GetAll()
         {
@@ -35,7 +35,7 @@ namespace FurniShop.API.Controllers
         #endregion
 
         #region Create DiscountCode
-        [HttpPost]
+        [HttpPost("Create")]
         [Authorize(Roles = "Admin,Seller")]
         public async Task<IActionResult> Create([FromBody] DiscountCodeRequest request)
         {

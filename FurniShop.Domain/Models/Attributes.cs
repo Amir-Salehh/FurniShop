@@ -7,17 +7,13 @@ using System.Threading.Tasks;
 
 namespace FurniShop.Domain.Models
 {
-    public class ProductAttribute
+    public class Attributes
     {
-        public int ProductId { get; set; }
-
+        [Key]
         public int AttributeId { get; set; }
 
-        public string Value { get; set; } = null!;
+        public string Name { get; set; } = null!;
 
-        public Product Product { get; set; }
-
-        public Attributes Attribute { get; set; }
-
+        public ICollection<ProductAttribute> ProductAttributes { get; set; }
     }
 }

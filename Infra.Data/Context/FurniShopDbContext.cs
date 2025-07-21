@@ -1,11 +1,5 @@
 ﻿using FurniShop.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infra.Data.Context
 {
@@ -17,6 +11,7 @@ namespace Infra.Data.Context
         }
 
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Attributes> Attributes { get; set; }
         public DbSet<BankCartInformation> BankCarts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -27,8 +22,6 @@ namespace Infra.Data.Context
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductAttribute> ProductAttributes { get; set; }
-        public DbSet<ProductAttributeDetail> ProductAttributeDetails { get; set; }
-        public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<SellerPayout> SellerPayouts { get; set; }
@@ -63,6 +56,20 @@ namespace Infra.Data.Context
             .WithMany(sc => sc.Reviews)
             .HasForeignKey(ci => ci.User_Id)
             .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ProductAttribute>()
+                .HasKey(pa => new { pa.ProductId, pa.AttributeId });
+
+            modelBuilder.Entity<ProductAttribute>()
+                .HasOne(pa => pa.Product)
+                .WithMany(p => p.ProductAttributes)
+                .HasForeignKey(pa => pa.ProductId);
+
+            modelBuilder.Entity<ProductAttribute>()
+                .HasOne(pa => pa.Attribute)
+                .WithMany(p => p.ProductAttributes)
+                .HasForeignKey(pa => pa.AttributeId);
+
         }
     }
 }

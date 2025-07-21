@@ -13,7 +13,7 @@ namespace Infra.Data.Migrations
 {
     [DbContext(typeof(FurniShopDbContext))]
     [Migration("20250720112326_update")]
-    partial class update
+    partial class Update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

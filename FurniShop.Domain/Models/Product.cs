@@ -41,7 +41,7 @@ namespace FurniShop.Domain.Models
 
         public DateTime Updated_At { get; set; }
 
-        public ICollection<ProductDetail> Product_Detail { get; set; } = null!;
+        public ICollection<ProductAttribute>? ProductAttributes { get; set; } 
 
         public ICollection<Review>? Reviews { get; set; }
     }

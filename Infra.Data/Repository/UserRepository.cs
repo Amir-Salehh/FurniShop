@@ -44,7 +44,7 @@ namespace Infra.Data.Repository
         public async Task DeleteUserAsync(int UserId)
         {
             var user = await GetUserByIdAsync(UserId);
-            _ctx.Users.Remove(user);
+            _ctx.Users.Remove(user!);
             await SaveAsync();
         }
 
@@ -86,7 +86,7 @@ namespace Infra.Data.Repository
         {
             var User = await GetUserByIdAsync(user.UserId);
 
-            User.FullName = user.FullName;
+            User!.FullName = user.FullName;
             User.Email = user.Email;
 
             await SaveAsync();

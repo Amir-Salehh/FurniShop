@@ -22,7 +22,7 @@ namespace FurniShop.API.Controllers
         }
 
         #region Get All Product
-        [HttpGet("GetAllProducts")]
+        [HttpGet("Products")]
         public IActionResult CheckExistProductAcync() 
         {
             var products = _productService.GetAll();
@@ -35,7 +35,7 @@ namespace FurniShop.API.Controllers
         #endregion
 
         #region Create Product
-        [HttpPost("CreateProduct")]
+        [HttpPost("Create")]
         [Authorize(Roles = "Admin,Seller")]
         public async Task<IActionResult> Create([FromBody] ProductRequest request)
         {
@@ -54,13 +54,23 @@ namespace FurniShop.API.Controllers
                 return BadRequest("این کتگوری وجود ندارد");
             }
 
+            if (request.AtributeName!.Count != request.AtributeValue!.Count)
+            {
+                return BadRequest("تعداد ویژگی های وارد شده با تعداد مقادیرشون همخونی نداره");
+            }
+
+            if (request.AtributeName != null && request.AtributeValue == null)
+            {
+                return BadRequest($"ویژگی {request.AtributeName} باید مقدار داشته باشد");
+            }
+
             await _productService.CreateProductAsync(request);
             return Ok("محصول با موفقیت ساخته شد");
         }
         #endregion
 
         #region Delete Product
-        [HttpDelete("DeleteProduct/{id}")]
+        [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin,Seller")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -76,7 +86,7 @@ namespace FurniShop.API.Controllers
 
             try
             {
-                _productService.DeleteProduct(id);
+                await _productService.DeleteProduct(id);
                 return Ok("با موفقیت حذف شد");
             }
             catch (Exception err)

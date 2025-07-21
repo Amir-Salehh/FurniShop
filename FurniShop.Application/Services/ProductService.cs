@@ -4,7 +4,6 @@ using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace FurniShop.Application.Services
 {
@@ -12,14 +11,17 @@ namespace FurniShop.Application.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IAttributeRepository _attributeRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ProductService (IProductRepository productRepository, ICategoryRepository categoryRepository, IHttpContextAccessor httpContextAccessor)
+        public ProductService (IProductRepository productRepository, ICategoryRepository categoryRepository, 
+                               IHttpContextAccessor httpContextAccessor, IAttributeRepository attributeRepository)
         {
 
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _httpContextAccessor = httpContextAccessor;
+            _attributeRepository = attributeRepository;
         }
 
         public async Task<bool> CheckExistProductAsync(string ProductNumber)
@@ -37,7 +39,13 @@ namespace FurniShop.Application.Services
 
             var DiscountedPrice = AddDiscount(request.OrginalPrice, request.Discount, request.DiscountType);
 
-            int userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(type: ClaimTypes.NameIdentifier).Value);
+            int userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(type: ClaimTypes.NameIdentifier)!.Value);
+
+            List<int> attributeIds = new() ;
+            if(request.AtributeName!.Count != 0)
+            {
+                attributeIds = await CreateAttribute(request.AtributeName!);
+            }
 
             var product = new Product
             {
@@ -50,14 +58,68 @@ namespace FurniShop.Application.Services
                 DiscountedPrice = DiscountedPrice,
                 ImageUrl = request.ImageUrl,
                 UserId = userId,
-                CategoryId = category.CategoryId
+                CategoryId = category.CategoryId,
+                ProductAttributes = new List<ProductAttribute>()
             };
 
-            await _productRepository.CreatProductAsync(product);
+
+            if (request.AtributeName?.Count > 0)
+            {
+                for (int i = 0; i < attributeIds.Count; i++)
+                {
+                        product.ProductAttributes.Add(new ProductAttribute
+                        {
+                            AttributeId = attributeIds[i],
+                            Value = request.AtributeValue![i]
+                        });
+                }
+            }
+            else
+            {
+                product.ProductAttributes = null;
+            }
+
+                await _productRepository.CreatProductAsync(product);
+
         }
+
+        public async Task<List<int>> CreateAttribute(List<string> name)
+        {
+            List<int> attributeIds = new List<int>();
+            foreach(var nameItem in name)
+            {
+                bool existAttribute = await _attributeRepository.CheckExist(nameItem);
+                if (existAttribute)
+                {
+                    continue;
+                }
+
+                var attribute = new Attributes
+                {
+                    Name = nameItem,
+                };
+
+                await _attributeRepository.Create(attribute);
+
+                attributeIds.Add(attribute.AttributeId);
+            }
+
+            return attributeIds;
+            
+        }
+
 
         public async Task DeleteProduct (int productId)
         {
+            if (_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role)!.Value == "Seller")
+            {
+                var hasProduct = await _productRepository.GetByUser(productId);
+                if (hasProduct == null)
+                {
+                    throw new Exception("شما همچین محصولی ندارید");
+                }
+            }
+
             await _productRepository.DeleteProduct(productId);
         }
 

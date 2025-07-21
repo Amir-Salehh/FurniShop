@@ -55,7 +55,7 @@ namespace Infra.Data.Repository
         {
             var category = await _ctx.Categories.FirstOrDefaultAsync(c => c.Name == categcoryName);
 
-            return category;
+            return category!;
         }
 
         public async Task Save()
