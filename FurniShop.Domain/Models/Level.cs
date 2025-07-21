@@ -12,14 +12,11 @@ namespace FurniShop.Domain.Models
         [Key]
         public int LevelId { get; set; }
 
-        public string LevelDetail { get; set; } = null!;
+        public string LevelName { get; set; } = null!;
 
-        public string MinSales { get; set; } = null!;
+        public decimal MinSales { get; set; }
 
-        public decimal Discount_Percent { get; set; }
+        public decimal DiscountSharePercent { get; set; } 
 
-        public DateTime Created_At { get; set; }
-
-        public DateTime Updated_At { get; set; }
     }
 }

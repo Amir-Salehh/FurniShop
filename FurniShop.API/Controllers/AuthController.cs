@@ -31,35 +31,7 @@ namespace FurniShop.API.Controllers
                 return BadRequest("شماره تلفن یا ایمیل وجود دارد");
             }
 
-            byte[] salt = RandomNumberGenerator.GetBytes(16);
-
-            string HashedPassword = PasswordHelper.HashPasswordBase64(request.Password, salt);
-
-
-            var userRoles = new List<UserRoles>
-                {
-                    new UserRoles{ RoleId = 3 },
-                };
-
-            if (request.CheckSeller)
-            {
-                userRoles.Add(new UserRoles { RoleId = 2 });
-            }
-
-            var user = new User
-            {
-                FullName = request.FullName,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
-                Addresses = null,
-                Password = HashedPassword,
-                saltpassword = salt,
-                CreatedAt = DateTime.UtcNow,
-                UserRoles = userRoles
-            };
-            
-
-            await _service.RegisterUserAsync(user);
+            await _service.RegisterUserAsync(request);
             return Created();
         }
         #endregion
@@ -80,7 +52,7 @@ namespace FurniShop.API.Controllers
 
             try
             {
-                var token = await _service.CheckLoginAsync(request.EmailPhone, request.Password, request.RememberMe);
+                var token = await _service.CheckLoginAsync(request);
                 return Ok(new { Token=token });
             }
             catch (Exception )

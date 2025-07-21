@@ -128,13 +128,18 @@ namespace FurniShop.Application.Services
             if (discount == null || discount == 0)
                 return OrginalPrice;
 
-            return DiscountType switch
+            if (Equals(DiscountType, DiscountCodeType.Fixed))
             {
-                DiscountType.None => OrginalPrice,
-                DiscountType.Fixed => OrginalPrice - discount.Value,
-                DiscountType.Persent => OrginalPrice - (OrginalPrice * (discount.Value / 100)),
-                _ => OrginalPrice
-            };
+                return OrginalPrice - discount.Value;
+            }
+            else if (Equals(DiscountType, DiscountCodeType.Persent))
+            {
+                return OrginalPrice - (OrginalPrice * (discount.Value / 100));
+            }
+            else
+            {
+                return OrginalPrice;
+            }
 
         }
 

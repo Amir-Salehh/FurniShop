@@ -15,8 +15,8 @@ namespace FurniShop.Domain.Models
 
         public string CartNumber { get; set; } = null!;
 
-        [ForeignKey("Seller")]
-        public int SellerId { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
 
         public string BankName { get; set; } = null!;
 

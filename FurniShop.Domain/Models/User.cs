@@ -14,6 +14,9 @@ namespace FurniShop.Domain.Models
         [Key]
         public int UserId { get; set; }
 
+        [ForeignKey("Level")]
+        public int LevelId { get; set; }
+
         public string FullName { get; set; } = null!;
 
         public string PhoneNumber { get; set; } = null!;

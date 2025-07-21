@@ -1,4 +1,5 @@
-﻿using FurniShop.Application.Interfaces;
+﻿using FurniShop.Application.DTOs.Auth;
+using FurniShop.Application.Interfaces;
 using FurniShop.Application.Security;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,18 +28,18 @@ namespace FurniShop.Application.Services
             return await _userRepository.CheckExistUserAsync(EmailMobile);
         }
 
-        public async Task<string> CheckLoginAsync(string emailPhone, string password, bool remmemberMe)
+        public async Task<string> CheckLoginAsync(LoginRequest request)
         {
-            var user = await _userRepository.GetUserByEmailOrMobileAsync(emailPhone);
+            var user = await _userRepository.GetUserByEmailOrMobileAsync(request.EmailPhone);
 
             if (user == null)
                 throw new Exception("کاربر پیدا نشد");
 
-            string hashedPassword = PasswordHelper.HashPasswordBase64(password.Trim(), user.saltpassword);
+            string hashedPassword = PasswordHelper.HashPasswordBase64(request.Password.Trim(), user.saltpassword);
 
             if (!string.Equals(hashedPassword, user.Password, StringComparison.Ordinal)) throw new Exception();
 
-            return GenerateToken(user, remmemberMe);
+            return GenerateToken(user, request.RememberMe);
         }
 
         private string GenerateToken(User user, bool remmemberMe)
@@ -50,7 +52,7 @@ namespace FurniShop.Application.Services
             {
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-
+                new Claim("LevelId", user.LevelId.ToString()),
             };
 
             foreach (var userRole in user.UserRoles)
@@ -76,8 +78,32 @@ namespace FurniShop.Application.Services
             return await _userRepository.IsExistUserAsync(email.Trim().ToLower(), PhoneNumber);
         }
 
-        public async Task RegisterUserAsync(User user)
+        public async Task RegisterUserAsync(RegisterRequest request)
         {
+            byte[] salt = RandomNumberGenerator.GetBytes(16);
+            string HashedPassword = PasswordHelper.HashPasswordBase64(request.Password, salt);
+
+            var user = new User
+            {
+                FullName = request.FullName,
+                Email = request.Email,
+                PhoneNumber = request.PhoneNumber,
+                Addresses = null,
+                Password = HashedPassword,
+                saltpassword = salt,
+                CreatedAt = DateTime.UtcNow,
+                UserRoles = new List<UserRoles>()
+                {
+                    new UserRoles { RoleId = 3 }
+                },
+            };
+
+            if (request.CheckSeller)
+            {
+                user.UserRoles.Add(new UserRoles { RoleId = 2 });
+                user.LevelId = 1;
+            }
+
             await _userRepository.CreateNewUserAsync(user);
         }
 
