@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FurniShop.Application.Services
 {
@@ -30,11 +31,11 @@ namespace FurniShop.Application.Services
             var user = await _userRepository.GetUserByEmailOrMobileAsync(emailPhone);
 
             if (user == null)
-                throw new Exception("User not found.");
+                throw new Exception("کاربر پیدا نشد");
 
             string hashedPassword = PasswordHelper.HashPasswordBase64(password.Trim(), user.saltpassword);
 
-            if (!string.Equals(hashedPassword, user.Password, StringComparison.Ordinal)) throw new Exception("Incorrect password.");
+            if (!string.Equals(hashedPassword, user.Password, StringComparison.Ordinal)) throw new Exception();
 
             return GenerateToken(user, remmemberMe);
         }
@@ -47,12 +48,16 @@ namespace FurniShop.Application.Services
             
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Email)
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+
             };
 
             foreach (var userRole in user.UserRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, userRole.Role.RoleName));
+                claims.Add(new Claim(
+                    ClaimTypes.Role, userRole.Role.RoleName)
+                    );
             }
 
             var token = new JwtSecurityToken(
@@ -75,5 +80,18 @@ namespace FurniShop.Application.Services
         {
             await _userRepository.CreateNewUserAsync(user);
         }
+
+        public List<User> GetUsers()
+        {
+            var users = _userRepository.GetAllUsers();
+            return users.ToList();
+        }
+
+        public async Task<User> GetUserById(int userId)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            return user!;
+        }
+
     }
 }

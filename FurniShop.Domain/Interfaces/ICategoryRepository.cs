@@ -20,6 +20,10 @@ namespace FurniShop.Domain.Interfaces
         public Task DeleteCategory(int CategoryId);
 
         public Task Save();
-        Task<bool> GetCategoryByName(string categcoryName);
+
+        Task<Category> GetCategoryByName(string categcoryName);
+
+        Task<bool> CheckExistCategoryByName(string categoryName);
+        Task<bool> CheckExistCategoryById(int categoryId);
     }
 }

@@ -15,7 +15,6 @@ namespace FurniShop.Domain.Models
 
         [ForeignKey("Category")]
         public int? CategoryId { get; set; }
-        public Category? Category { get; set; }
 
         public int SellerId { get; set; }
 
@@ -25,15 +24,13 @@ namespace FurniShop.Domain.Models
 
         public int UsedCount { get; set; } = 0 ;
 
-        public DateTime StartedAt { get; set; }
+        public DateOnly StartedAt { get; set; }
 
-        public DateTime EndAt { get; set; }
+        public DateOnly EndAt { get; set; }
 
         public bool IsActive { get; set; } = false ;
 
         public DateTime CreatedAt { get; set; }
-
-        public int MaxUsage { get; set; }
 
         public decimal Min_Order_Amount { get; set; }
 

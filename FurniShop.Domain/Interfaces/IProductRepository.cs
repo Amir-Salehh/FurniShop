@@ -17,10 +17,15 @@ namespace FurniShop.Domain.Interfaces
 
         public Task CreatProductAsync(Product product);
 
+        public Task<bool> CheckExist(string number);
+        public Task<bool> CheckExist(int id);
+
         public Task UpdateProduct(Product product);
 
         public Task DeleteProduct(int id);
 
         public Task SaveAsync();
+
+        public Task<List<Product>> GetByUser(int userId);
     }
 }

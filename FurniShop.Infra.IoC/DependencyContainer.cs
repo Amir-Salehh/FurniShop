@@ -19,11 +19,16 @@ namespace FurniShop.Infra.IoC
             // Application Layer
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<IProductService, ProductService>();
+            service.AddScoped<ICategoryService, CategoryService>();
+            service.AddScoped<IDiscountCodeService, DiscountCodeService>();
 
             // Infra Layer
             service.AddScoped<IUserRepository, UserRepository>();
             service.AddScoped<ICategoryRepository, CategoryRepository>();
             service.AddScoped<IProductRepository, ProductRepository>();
+            service.AddScoped<IDiscountCodeRepository, DiscountCodeRepository>();
+
+            service.AddHttpContextAccessor();
         }
     }
 }

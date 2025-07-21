@@ -1,0 +1,99 @@
+﻿using FurniShop.Application.DTOs.Product;
+using FurniShop.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
+using System.Security;
+using System.Threading.Tasks;
+
+namespace FurniShop.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CategoryController : ControllerBase
+    {
+        private ICategoryService _categoryService;
+        public CategoryController(ICategoryService categoryService)
+        {
+            _categoryService = categoryService;
+        }
+
+        #region Get All Category
+        [HttpGet("GetCategories")]
+        public IActionResult GetAll() 
+        {
+            var categories = _categoryService.GetAll();
+            if (categories == null)
+            {
+                return NotFound("دسته بندی وجود ندارد");
+            }
+
+            return Ok(categories);
+        }
+        #endregion
+
+        #region Create Category
+        [HttpPost("CreateCategory")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([FromBody] CategoryRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(await _categoryService.CheckExistCategoryByName(request.CategoryName))
+            {
+                return BadRequest("دسته بندی وجود دارد");
+            }
+
+            await _categoryService.CreateCategory(request);
+            return Ok("دسته بندی ساخته شد");
+        }
+        #endregion
+
+        #region Update Category
+        [HttpPut("UpdateCategory/{id}")]
+        public async Task<IActionResult> UpdateCategory(int id,[FromBody] CategoryRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(! await _categoryService.CheckExistCategoryById(id))
+            {
+                return BadRequest("این دسته بندی وجود ندارد");
+            }
+
+            await _categoryService.UpdateCategory(id, request.CategoryName);
+
+            return Ok("دسته بندی آپدیت شد");
+        }
+        #endregion
+
+        #region Delete Category
+        [HttpDelete("DeleteCategory/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            if (!await _categoryService.CheckExistCategoryById(id))
+            {
+                return BadRequest("این دسته وجود ندارد");
+            }
+            await _categoryService.DeleteCategory(id);
+
+            return Ok("دسته بندی حذف شد");
+        }
+        #endregion
+
+
+    }
+}

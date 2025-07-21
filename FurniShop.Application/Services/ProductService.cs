@@ -2,47 +2,63 @@
 using FurniShop.Application.Interfaces;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace FurniShop.Application.Services
 {
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ProductService (IProductRepository productRepository)
+        public ProductService (IProductRepository productRepository, ICategoryRepository categoryRepository, IHttpContextAccessor httpContextAccessor)
         {
+
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<bool> CheckExistProductAsync(string ProductNumber)
         {
-            var product = await _productRepository.GetByNumber(ProductNumber);
-
-            return true;
+            return await _productRepository.CheckExist(ProductNumber);
+        }
+        public async Task<bool> CheckExistProductAsync(int ProductId)
+        {
+            return await _productRepository.CheckExist(ProductId);
         }
 
-        public async Task CreateProductAsync(Product product)
+        public async Task CreateProductAsync(ProductRequest request)
         {
+            var category = await _categoryRepository.GetCategoryByName(request.CategoryName);
+
+            var DiscountedPrice = AddDiscount(request.OrginalPrice, request.Discount, request.DiscountType);
+
+            int userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(type: ClaimTypes.NameIdentifier).Value);
+
+            var product = new Product
+            {
+                ProductName = request.ProductName,
+                ProductDescription = request.ProductDescription,
+                ProductNumber = request.ProductNumber,
+                Stock = request.Stock,
+                OrginalPrice = request.OrginalPrice,
+                Discount = request.Discount,
+                DiscountedPrice = DiscountedPrice,
+                ImageUrl = request.ImageUrl,
+                UserId = userId,
+                CategoryId = category.CategoryId
+            };
+
             await _productRepository.CreatProductAsync(product);
         }
 
         public async Task DeleteProduct (int productId)
         {
             await _productRepository.DeleteProduct(productId);
-        }
-
-        public string GenerateProductNumber(int length = 5)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-        public List<Product> GetProducts()
-        {
-            var products = _productRepository.GetAll();
-            return (List<Product>)products;
         }
 
         public decimal AddDiscount(decimal OrginalPrice, decimal? discount, DiscountType DiscountType)
@@ -67,12 +83,13 @@ namespace FurniShop.Application.Services
 
         public List<Product> GetAll()
         {
-            return (List<Product>)_productRepository.GetAll();
+            return _productRepository.GetAll().ToList();
         }
 
-        public List<Product> GetProducts(int UserId)
+        public async Task<List<Product>> GetYourProducts(int UserId)
         {
-            throw new NotImplementedException();
+            var products = await _productRepository.GetByUser(UserId);
+            return products;
         }
     }
 }

@@ -41,19 +41,35 @@ namespace Infra.Data.Repository
         public async Task<Product> GetByIdAsync(int id)
         {
             var product = await _ctx.Products.FindAsync(id);
+            if (product == null)
+            {
+                throw new Exception(message:"این محصول پیدا نشد");
+            }
             return product;
         }
 
+        public async Task<bool> CheckExist(string number)
+        {
+            return await _ctx.Products.AnyAsync(p => p.ProductNumber == number);
+        }
+        public async Task<bool> CheckExist(int id)
+        {
+            return await _ctx.Products.AnyAsync(p => p.ProductId == id);
+        }
         public async Task<Product> GetByNumber(string number)
         {
             var product = await _ctx.Products.FirstOrDefaultAsync(p => p.ProductNumber == number);
-
+            if (product == null)
+            {
+                throw new Exception("این محصول پیدا نشد");
+            }
             return product;
         }
 
         public IEnumerable<Product> GetAll()
         {
-            return new List<Product>().AsEnumerable();
+            return _ctx.Products
+                .AsEnumerable();
         }
 
         public async Task SaveAsync()
@@ -64,7 +80,10 @@ namespace Infra.Data.Repository
         public async Task UpdateProduct(Product Product)
         {
             var product = await _ctx.Products.FindAsync(Product.ProductId);
-
+            if (product == null) 
+            {
+                throw new Exception("محصول پیدا نشد");
+            }
             product.ProductName = Product.ProductName;
             product.ProductDescription = Product.ProductDescription;
             product.OrginalPrice = Product.OrginalPrice;
@@ -72,6 +91,13 @@ namespace Infra.Data.Repository
             product.ImageUrl = Product.ImageUrl;
 
             await SaveAsync();
+        }
+
+        public async Task<List<Product>> GetByUser(int  userId)
+        {
+            var products = await _ctx.Products.Where(p => p.UserId == userId).ToListAsync();
+
+            return products;
         }
 
     }

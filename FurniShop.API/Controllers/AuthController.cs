@@ -45,6 +45,7 @@ namespace FurniShop.API.Controllers
             {
                 userRoles.Add(new UserRoles { RoleId = 2 });
             }
+
             var user = new User
             {
                 FullName = request.FullName,
@@ -64,8 +65,8 @@ namespace FurniShop.API.Controllers
         #endregion
 
         #region Login
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginRequest request)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -77,9 +78,16 @@ namespace FurniShop.API.Controllers
                 return NotFound("ایمیل یا شماره تلفن وارد شده وجود ندارد");
             }
 
-            var token = await _service.CheckLoginAsync(request.EmailPhone, request.Password, request.RememberMe);
+            try
+            {
+                var token = await _service.CheckLoginAsync(request.EmailPhone, request.Password, request.RememberMe);
+                return Ok(new { Token=token });
+            }
+            catch (Exception )
+            {
+                return BadRequest("پسورد اشتباه است");
+            }
 
-            return Ok(new { Token=token });
 
         }
         #endregion

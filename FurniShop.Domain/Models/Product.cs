@@ -15,15 +15,12 @@ namespace FurniShop.Domain.Models
 
         [ForeignKey("Category")]
         public int CategoryId  { get; set; }
-        public Category Category { get; set; } = null!;
 
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
 
         [ForeignKey("DiscountCode")]
         public int? DiscountCodeId { get; set; }
-        public DiscountCode? DiscountCode { get; set; }
 
         public decimal? Discount { get; set; }
 

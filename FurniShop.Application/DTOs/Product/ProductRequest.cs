@@ -15,6 +15,7 @@ namespace FurniShop.Application.DTOs.Product
         public string ProductName { get; set; } = null!;
 
         [Required(ErrorMessage = "این فیلد نمیتواند خالی باشد")]
+        [MaxLength(500)]
         public string ProductDescription { get; set; } = null!;
 
         [Required(ErrorMessage = "این فیلد نمیتواند خالی باشد")]
@@ -29,13 +30,13 @@ namespace FurniShop.Application.DTOs.Product
         [Required(ErrorMessage = "این فیلد نمیتواند خالی باشد")]
         public string CategoryName { get; set; } = null!;
 
-        [Required(ErrorMessage = "این فیلد نمیتواند خالی باشد")]
-        public int UserId { get; set; }
         public DiscountType DiscountType { get; set; } = DiscountType.None;
         public decimal? Discount { get; set; }
 
         [Required(ErrorMessage = "این فیلد نمیتواند خالی باشد")]
+        [StringLength(5, MinimumLength = 5, ErrorMessage = "کد کالا باید 5 کاراکتر باشد")]
         public string ProductNumber { get; set; } = null!;
+
     }
 
     public enum DiscountType

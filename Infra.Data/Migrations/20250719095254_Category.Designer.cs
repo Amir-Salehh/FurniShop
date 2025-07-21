@@ -4,6 +4,7 @@ using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Data.Migrations
 {
     [DbContext(typeof(FurniShopDbContext))]
-    partial class FurniShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250719095254_Category")]
+    partial class Category
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,11 +220,14 @@ namespace Infra.Data.Migrations
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateOnly>("EndAt")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("EndAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<int>("MaxUsage")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Min_Order_Amount")
                         .HasColumnType("decimal(18,2)");
@@ -232,13 +238,15 @@ namespace Infra.Data.Migrations
                     b.Property<int>("SellerId")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly>("StartedAt")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("UsedCount")
                         .HasColumnType("int");
 
                     b.HasKey("DiscountCodeId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("DiscountCodes");
                 });
@@ -395,6 +403,8 @@ namespace Infra.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("DiscountCodeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -675,6 +685,15 @@ namespace Infra.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FurniShop.Domain.Models.DiscountCode", b =>
+                {
+                    b.HasOne("FurniShop.Domain.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("FurniShop.Domain.Models.Order", b =>
                 {
                     b.HasOne("FurniShop.Domain.Models.User", "User")
@@ -699,7 +718,7 @@ namespace Infra.Data.Migrations
 
             modelBuilder.Entity("FurniShop.Domain.Models.Product", b =>
                 {
-                    b.HasOne("FurniShop.Domain.Models.Category", null)
+                    b.HasOne("FurniShop.Domain.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -709,7 +728,17 @@ namespace Infra.Data.Migrations
                         .WithMany("Products")
                         .HasForeignKey("DiscountCodeId");
 
+                    b.HasOne("FurniShop.Domain.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
                     b.Navigation("DiscountCode");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.ProductAttributeDetail", b =>

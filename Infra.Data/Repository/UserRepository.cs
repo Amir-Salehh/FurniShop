@@ -1,4 +1,5 @@
-﻿using FurniShop.Application.Security;
+﻿using Azure.Core;
+using FurniShop.Application.Security;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using Infra.Data.Context;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +37,8 @@ namespace Infra.Data.Repository
         public async Task CreateNewUserAsync(User user)
         {
             await _ctx.Users.AddAsync(user);
-            await SaveAsync(); 
+            await SaveAsync();
+
         }
 
         public async Task DeleteUserAsync(int UserId)
@@ -47,14 +50,18 @@ namespace Infra.Data.Repository
 
         public IEnumerable<User> GetAllUsers()
         {
-            var users = new List<User>().AsEnumerable();
+            var users = _ctx.Users.AsEnumerable();
             return users;
         }
 
         public async Task<User?> GetUserByEmailOrMobileAsync(string emailMobile)
         {
-            var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == emailMobile || u.PhoneNumber == emailMobile);
+            var user = await _ctx.Users
+                .Include(r => r.UserRoles)
+                .ThenInclude(r => r.Role)
+                .FirstOrDefaultAsync(u => u.Email == emailMobile || u.PhoneNumber == emailMobile);
             
+
             return user;
         }
 

@@ -37,5 +37,7 @@ namespace FurniShop.Application.DTOs.Auth
         {
             return System.Text.RegularExpressions.Regex.IsMatch(input, @"^(\+98|0)?9\d{9}$");
         }
+
+
     }
 }

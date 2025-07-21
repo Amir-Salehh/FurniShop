@@ -11,17 +11,16 @@ namespace FurniShop.Application.Interfaces
     public interface IProductService
     {
         public List<Product> GetAll();
-        public List<Product> GetProducts(int UserId);
+        public Task<List<Product>> GetYourProducts(int UserId);
 
-        public Task CreateProductAsync (Product product);
+        public Task CreateProductAsync (ProductRequest request);
 
         public Task UpdateProductAsync (Product product);
 
         public Task DeleteProduct (int productId);
 
         public Task<bool> CheckExistProductAsync(string ProductNumber);
-
-        public string GenerateProductNumber(int length = 5);
+        public Task<bool> CheckExistProductAsync(int ProductId);
 
         public decimal AddDiscount(decimal OrginalPrice, decimal? Discount, DiscountType DiscountType);
     }

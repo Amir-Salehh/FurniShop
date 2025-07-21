@@ -1,4 +1,5 @@
-﻿using FurniShop.Application.Interfaces;
+﻿using FurniShop.Application.DTOs.Product;
+using FurniShop.Application.Interfaces;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using System;
@@ -17,18 +18,46 @@ namespace FurniShop.Application.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<bool> CheckExistCategory(string categcoryName)
+        public List<Category> GetAll()
         {
-            if(!await _categoryRepository.GetCategoryByName(categcoryName))
-            {
-                return false;
-            }
-            return true;
+            var categorie = _categoryRepository.GetAllCategories();
+            return categorie.ToList();
         }
 
-        public async Task CreateCategory(Category category)
+        public async Task<bool> CheckExistCategoryById(int categoryId)
         {
+            return await _categoryRepository.CheckExistCategoryById(categoryId);
+        }
+
+        public async Task CreateCategory(CategoryRequest request)
+        {
+            var category = new Category
+            {
+                Name = request.CategoryName,
+            };
+
             await _categoryRepository.CreateCategory(category);
+        }
+
+        public async Task DeleteCategory(int categoryId)
+        {
+
+            await _categoryRepository.DeleteCategory(categoryId);
+        }
+
+        public async Task UpdateCategory(int categoryId, string CategoryName)
+        {
+            var category = await _categoryRepository.GetCategoryById(categoryId);
+
+            category.Name = CategoryName;
+
+            await _categoryRepository.UpdateCategory(category);
+        }
+
+        public async Task<bool> CheckExistCategoryByName(string categoryName)
+        {
+            return await _categoryRepository.CheckExistCategoryByName(categoryName);
+
         }
     }
 }
