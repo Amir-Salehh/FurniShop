@@ -20,7 +20,7 @@ namespace FurniShop.API.Controllers
         }
 
         #region Get All Category
-        [HttpGet("GetCategories")]
+        [HttpGet("Categories")]
         public IActionResult GetAll() 
         {
             var categories = _categoryService.GetAll();
@@ -34,7 +34,7 @@ namespace FurniShop.API.Controllers
         #endregion
 
         #region Create Category
-        [HttpPost("CreateCategory")]
+        [HttpPost("Create")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CategoryRequest request)
         {
@@ -54,7 +54,7 @@ namespace FurniShop.API.Controllers
         #endregion
 
         #region Update Category
-        [HttpPut("UpdateCategory/{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> UpdateCategory(int id,[FromBody] CategoryRequest request)
         {
             if (!ModelState.IsValid)
@@ -74,7 +74,7 @@ namespace FurniShop.API.Controllers
         #endregion
 
         #region Delete Category
-        [HttpDelete("DeleteCategory/{id}")]
+        [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
