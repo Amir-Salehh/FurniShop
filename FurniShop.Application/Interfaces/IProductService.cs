@@ -15,7 +15,7 @@ namespace FurniShop.Application.Interfaces
 
         public Task CreateProductAsync (ProductRequest request);
 
-        public Task UpdateProductAsync (Product product);
+        public Task UpdateProductAsync(int id, ProductRequest request);
 
         public Task DeleteProduct (int productId);
 

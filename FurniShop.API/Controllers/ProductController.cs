@@ -112,5 +112,24 @@ namespace FurniShop.API.Controllers
         }
         #endregion
 
+        #region Update product
+        [HttpPut("Update/{id}")]
+        [Authorize(Roles = "Admin, Seller")]
+        public async Task<IActionResult> Update(int id, [FromBody] ProductRequest request)
+        {
+            if (!ModelState.IsValid) 
+            { 
+                return BadRequest(ModelState);
+            }
+
+            if(!await _productService.CheckExistProductAsync(id))
+            {
+                return BadRequest("این محصول وجود ندارد");
+            }
+
+            _productService.UpdateProductAsync(id, request);
+        }
+        #endregion
+
     }
 }

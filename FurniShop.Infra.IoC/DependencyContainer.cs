@@ -28,6 +28,7 @@ namespace FurniShop.Infra.IoC
             service.AddScoped<IProductRepository, ProductRepository>();
             service.AddScoped<IDiscountCodeRepository, DiscountCodeRepository>();
             service.AddScoped<IAttributeRepository, AttributeRepository>();
+            service.AddScoped<IBankCartRepository, BankCartRepository>();
 
             service.AddHttpContextAccessor();
         }

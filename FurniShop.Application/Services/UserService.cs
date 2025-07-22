@@ -1,8 +1,10 @@
-﻿using FurniShop.Application.DTOs.Auth;
+﻿using FurniShop.Application.DTOs;
+using FurniShop.Application.DTOs.Auth;
 using FurniShop.Application.Interfaces;
 using FurniShop.Application.Security;
 using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,10 +19,15 @@ namespace FurniShop.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _config;
-        public UserService(IUserRepository userRepository, IConfiguration config)
+        private readonly IBankCartRepository _backCartRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserService(IUserRepository userRepository, IConfiguration config,
+            IBankCartRepository backCartRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _config = config;
+            _backCartRepository = backCartRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<bool> CheckExistAsync(string EmailMobile)
@@ -117,6 +124,54 @@ namespace FurniShop.Application.Services
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             return user!;
+        }
+
+        public async Task<BankCartInformation?> GetCart()
+        {
+            int UserId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            return await _backCartRepository.GetCart(UserId);
+        }
+
+        public async Task CreateCart(BankCartRequest request)
+        {
+            var BankCart = new BankCartInformation
+            {
+                CartNumber = request.CartNumber,
+                BankName = request.CartName,
+            };
+
+            await _backCartRepository.Create(BankCart);
+        }
+
+        public async Task<bool> CheckHaveBankCart()
+        {
+            int UserId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            return await _backCartRepository.CheckHaveBankCart(UserId);
+        }
+
+        public async Task<bool> CheckExistCart(int id)
+        {
+            return await _backCartRepository.CheckExistCart(id);
+        }
+
+        public async Task UpdateCart(BankCartRequest request)
+        {
+            int UserId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var cart = await _backCartRepository.GetCart(UserId);
+
+            cart!.CartNumber = request.CartNumber;
+            cart.BankName = request.CartName;
+
+            await _backCartRepository.Update(cart);
+        }
+
+        public async Task DeleteCart(int CartId)
+        {
+            var cart = await _backCartRepository.GetCartById(CartId);
+
+            await _backCartRepository.Delete(cart!);
         }
 
     }

@@ -31,6 +31,8 @@ namespace FurniShop.Domain.Models
 
         public DateTime UpdatedAt { get; set; }
 
+        public BankCartInformation? BankCart { get; set; }
+
         public ICollection<Address>? Addresses { get; set; }
 
         public ICollection<Review>? Reviews { get; set; }

@@ -67,7 +67,7 @@ namespace Infra.Data.Repository
 
         public async Task<User?> GetUserByIdAsync(int Id)
         {
-            var user = await _ctx.Users.FindAsync(Id);
+            var user = await _ctx.Users.Include(bc => bc.BankCart).FirstOrDefaultAsync(u => u.UserId == Id);
 
             return user;
         }

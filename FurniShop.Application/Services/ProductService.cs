@@ -143,8 +143,19 @@ namespace FurniShop.Application.Services
 
         }
 
-        public async Task UpdateProductAsync(Product product)
+        public async Task UpdateProductAsync(int id, ProductRequest request)
         {
+            var product = await _productRepository.GetByIdAsync(id);
+
+            product.ProductName = request.ProductName;
+            product.ProductDescription = request.ProductDescription;
+            product.ProductNumber = request.ProductNumber;
+            product.OrginalPrice = request.OrginalPrice;
+            product.Discount = request.Discount;
+            product.Stock = request.Stock;
+            product.ImageUrl = request.ImageUrl;
+
+
             await _productRepository.UpdateProduct(product);
         }
 
