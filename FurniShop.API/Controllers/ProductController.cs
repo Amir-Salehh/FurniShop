@@ -1,4 +1,5 @@
-﻿using FurniShop.Application.DTOs.Product;
+﻿using AutoMapper;
+using FurniShop.Application.DTOs.Product;
 using FurniShop.Application.Interfaces;
 using FurniShop.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,10 +16,12 @@ namespace FurniShop.API.Controllers
     {
         private IProductService _productService;
         private ICategoryService _categoryService;
-        public ProductController(IProductService productService, ICategoryService categoryService)
+        private  IMapper _mapper;
+        public ProductController(IProductService productService, ICategoryService categoryService, IMapper mapper)
         {
             _productService = productService;
             _categoryService = categoryService;
+            _mapper = mapper;
         }
 
         #region Get All Product
@@ -30,7 +33,9 @@ namespace FurniShop.API.Controllers
             {
                 return NotFound("محصولی وجود ندارد");
             }
-            return Ok(products);
+
+            var productDto = _mapper.Map<List<ProductResponseDto>>(products);
+            return Ok(productDto);
         }
         #endregion
 
@@ -108,28 +113,29 @@ namespace FurniShop.API.Controllers
             {
                 return NotFound("این کاربر محصولی ندارد");
             }
-            return Ok(products);
+            var productDto = _mapper.Map<List<ProductResponseDto>>(products);
+            return Ok(productDto);
         }
         #endregion
 
-        #region Update product
-        [HttpPut("Update/{id}")]
-        [Authorize(Roles = "Admin, Seller")]
-        public async Task<IActionResult> Update(int id, [FromBody] ProductRequest request)
-        {
-            if (!ModelState.IsValid) 
-            { 
-                return BadRequest(ModelState);
-            }
+        //#region Update product
+        //[HttpPut("Update/{id}")]
+        //[Authorize(Roles = "Admin, Seller")]
+        //public async Task<IActionResult> Update(int id, [FromBody] ProductRequest request)
+        //{
+        //    if (!ModelState.IsValid) 
+        //    { 
+        //        return BadRequest(ModelState);
+        //    }
 
-            if(!await _productService.CheckExistProductAsync(id))
-            {
-                return BadRequest("این محصول وجود ندارد");
-            }
+        //    if(!await _productService.CheckExistProductAsync(id))
+        //    {
+        //        return BadRequest("این محصول وجود ندارد");
+        //    }
 
-            _productService.UpdateProductAsync(id, request);
-        }
-        #endregion
+        //    _productService.UpdateProductAsync(id, request);
+        //}
+        //#endregion
 
     }
 }

@@ -27,5 +27,8 @@ namespace FurniShop.Domain.Interfaces
         public Task SaveAsync();
 
         public Task<List<Product>> GetByUser(int userId);
+        public Task<List<Product>> GetByCategory(int? userId);
+
+
     }
 }

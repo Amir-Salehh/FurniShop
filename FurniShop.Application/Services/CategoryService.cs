@@ -59,5 +59,6 @@ namespace FurniShop.Application.Services
             return await _categoryRepository.CheckExistCategoryByName(categoryName);
 
         }
+
     }
 }

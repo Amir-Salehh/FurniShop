@@ -4,7 +4,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using FurniShop.Application.DTOs;
+using AutoMapper;
+using FurniShop.Application.Profiles;
+using FurniShop.Application.DTOs.User;
 
 namespace FurniShop.API.Controllers
 {
@@ -13,14 +15,16 @@ namespace FurniShop.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly IMapper _mapper;
+        public UsersController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         #region Get All Users
         [HttpGet("AllUsers")]
-        [Authorize("Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAll()
         {
             var users = _userService.GetUsers();
@@ -30,7 +34,9 @@ namespace FurniShop.API.Controllers
                 return NotFound("کاربری وجود ندارد");
             }
 
-            return Ok(users);
+            var UserDto = _mapper.Map<List<UserResponseDTo>>(users);
+
+            return Ok(UserDto);
         }
         #endregion
 

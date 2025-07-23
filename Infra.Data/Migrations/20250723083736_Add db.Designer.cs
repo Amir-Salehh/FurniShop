@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Data.Migrations
 {
     [DbContext(typeof(FurniShopDbContext))]
-    [Migration("20250721131352_Add Attribute")]
-    partial class AddAttribute
+    [Migration("20250723083736_Add db")]
+    partial class Adddb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,40 +33,11 @@ namespace Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Address_Id"));
 
-                    b.Property<string>("Alley")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Neighborhood")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Plaque")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PostalCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Province")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Unit")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Updated_At")
@@ -78,6 +49,10 @@ namespace Infra.Data.Migrations
                     b.Property<int>("User_id")
                         .HasColumnType("int");
 
+                    b.Property<string>("address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Address_Id");
 
                     b.HasIndex("UserId");
@@ -85,7 +60,7 @@ namespace Infra.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Attribute", b =>
+            modelBuilder.Entity("FurniShop.Domain.Models.Attributes", b =>
                 {
                     b.Property<int>("AttributeId")
                         .ValueGeneratedOnAdd()
@@ -99,7 +74,7 @@ namespace Infra.Data.Migrations
 
                     b.HasKey("AttributeId");
 
-                    b.ToTable("Attribute");
+                    b.ToTable("Attributes");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.BankCartInformation", b =>
@@ -121,13 +96,16 @@ namespace Infra.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SellerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("CartId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("BankCarts");
                 });
@@ -271,22 +249,15 @@ namespace Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LevelId"));
 
-                    b.Property<DateTime>("Created_At")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Discount_Percent")
+                    b.Property<decimal>("DiscountSharePercent")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("LevelDetail")
+                    b.Property<string>("LevelName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MinSales")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Updated_At")
-                        .HasColumnType("datetime2");
+                    b.Property<decimal>("MinSales")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("LevelId");
 
@@ -571,6 +542,9 @@ namespace Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LevelId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -611,6 +585,15 @@ namespace Infra.Data.Migrations
                     b.HasOne("FurniShop.Domain.Models.User", null)
                         .WithMany("Addresses")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("FurniShop.Domain.Models.BankCartInformation", b =>
+                {
+                    b.HasOne("FurniShop.Domain.Models.User", null)
+                        .WithOne("BankCart")
+                        .HasForeignKey("FurniShop.Domain.Models.BankCartInformation", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.CartItem", b =>
@@ -689,7 +672,7 @@ namespace Infra.Data.Migrations
 
             modelBuilder.Entity("FurniShop.Domain.Models.ProductAttribute", b =>
                 {
-                    b.HasOne("FurniShop.Domain.Models.Attribute", "Attribute")
+                    b.HasOne("FurniShop.Domain.Models.Attributes", "Attribute")
                         .WithMany("ProductAttributes")
                         .HasForeignKey("AttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -755,7 +738,7 @@ namespace Infra.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FurniShop.Domain.Models.Attribute", b =>
+            modelBuilder.Entity("FurniShop.Domain.Models.Attributes", b =>
                 {
                     b.Navigation("ProductAttributes");
                 });
@@ -790,6 +773,8 @@ namespace Infra.Data.Migrations
             modelBuilder.Entity("FurniShop.Domain.Models.User", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("BankCart");
 
                     b.Navigation("Reviews");
 

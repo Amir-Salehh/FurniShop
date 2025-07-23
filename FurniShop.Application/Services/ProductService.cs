@@ -147,6 +147,16 @@ namespace FurniShop.Application.Services
         {
             var product = await _productRepository.GetByIdAsync(id);
 
+            var category = await _categoryRepository.GetCategoryByName(request.CategoryName);
+
+            var DiscountedPrice = AddDiscount(request.OrginalPrice, request.Discount, request.DiscountType);
+
+            List<int> attributeIds = new();
+            if (request.AtributeName!.Count != 0)
+            {
+                attributeIds = await CreateAttribute(request.AtributeName!);
+            }
+
             product.ProductName = request.ProductName;
             product.ProductDescription = request.ProductDescription;
             product.ProductNumber = request.ProductNumber;

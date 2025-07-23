@@ -55,9 +55,9 @@ namespace FurniShop.API.Controllers
                 var token = await _service.CheckLoginAsync(request);
                 return Ok(new { Token=token });
             }
-            catch (Exception )
+            catch (Exception ex)
             {
-                return BadRequest("پسورد اشتباه است");
+                return BadRequest(ex.Message);
             }
 
 

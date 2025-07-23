@@ -1,4 +1,5 @@
-﻿using FurniShop.Application.DTOs.Product;
+﻿using AutoMapper;
+using FurniShop.Application.DTOs.Product;
 using FurniShop.Application.Interfaces;
 using FurniShop.Application.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -13,9 +14,11 @@ namespace FurniShop.API.Controllers
     public class DiscountCodeController : ControllerBase
     {
         private readonly IDiscountCodeService _discountCodeService;
-        public DiscountCodeController(IDiscountCodeService discountCodeService)
+        private readonly IMapper _mapper;
+        public DiscountCodeController(IDiscountCodeService discountCodeService, IMapper mapper)
         {
             _discountCodeService = discountCodeService;
+            _mapper = mapper;
         }
 
 
@@ -30,7 +33,10 @@ namespace FurniShop.API.Controllers
             {
                 return BadRequest("کد تخفیفی وجود ندارد");
             }
-            return Ok(Codes);
+
+            var codesDto = _mapper.Map<List<DiscountCodeResponseDTo>>(Codes);
+
+            return Ok(codesDto);
         }
         #endregion
 
@@ -47,6 +53,11 @@ namespace FurniShop.API.Controllers
             if (await _discountCodeService.CheckExist(request.Code))
             {
                 return BadRequest("این کد تخفیف وجود دارد");
+            }
+
+            if (request.CategoryId != null && request.ProductIds != null)
+            {
+                return BadRequest("محصولات مربوط به دسته بندی انتخاب شده اند");
             }
 
             try

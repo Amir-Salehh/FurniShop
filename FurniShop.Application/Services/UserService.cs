@@ -1,5 +1,5 @@
-﻿using FurniShop.Application.DTOs;
-using FurniShop.Application.DTOs.Auth;
+﻿using FurniShop.Application.DTOs.Auth;
+using FurniShop.Application.DTOs.User;
 using FurniShop.Application.Interfaces;
 using FurniShop.Application.Security;
 using FurniShop.Domain.Interfaces;
@@ -44,7 +44,7 @@ namespace FurniShop.Application.Services
 
             string hashedPassword = PasswordHelper.HashPasswordBase64(request.Password.Trim(), user.saltpassword);
 
-            if (!string.Equals(hashedPassword, user.Password, StringComparison.Ordinal)) throw new Exception();
+            if (!string.Equals(hashedPassword, user.Password, StringComparison.Ordinal)) throw new Exception("پسورد اشتباه است");
 
             return GenerateToken(user, request.RememberMe);
         }

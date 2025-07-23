@@ -1,3 +1,4 @@
+using FurniShop.Application.Profiles;
 using FurniShop.Infra.IoC;
 using Infra.Data.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(UserMappingProfile));
 
 builder.Services.AddDbContext<FurniShopDbContext>(options =>
 {

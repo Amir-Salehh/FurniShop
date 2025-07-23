@@ -38,7 +38,9 @@ namespace FurniShop.Domain.Models
 
         public string? Note { get; set; }
 
-        public ICollection<Product> Products { get; set; } = new List<Product>();
+        public List<int> Products { get; set; } = null!;
+
+        public ICollection<Product_DiscountCode> Product_DiscountCode { get; set; }
 
 
     }

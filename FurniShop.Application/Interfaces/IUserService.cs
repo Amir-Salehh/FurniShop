@@ -1,5 +1,5 @@
-﻿using FurniShop.Application.DTOs;
-using FurniShop.Application.DTOs.Auth;
+﻿using FurniShop.Application.DTOs.Auth;
+using FurniShop.Application.DTOs.User;
 using FurniShop.Domain.Models;
 using System;
 using System.Collections.Generic;

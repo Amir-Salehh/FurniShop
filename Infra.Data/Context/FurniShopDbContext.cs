@@ -28,12 +28,13 @@ namespace Infra.Data.Context
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRoles> UserRoles { get; set; }
+        public DbSet<Product_DiscountCode> Product_DiscountCode { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<UserRoles>().HasKey(ur => new {ur.UserId, ur.RoleId});
+            modelBuilder.Entity<UserRoles>().HasKey(ur => new { ur.UserId, ur.RoleId });
 
             modelBuilder.Entity<UserRoles>()
                 .HasOne(ur => ur.User)
@@ -70,6 +71,27 @@ namespace Infra.Data.Context
                 .WithMany(p => p.ProductAttributes)
                 .HasForeignKey(pa => pa.AttributeId);
 
+            modelBuilder.Entity<Product_DiscountCode>()
+                .HasKey(pd => new { pd.ProductId, pd.CodeId });
+
+            modelBuilder.Entity<Product_DiscountCode>()
+                .HasOne(pa => pa.Product)
+                .WithMany(p => p.Product_DiscountCode)
+                .HasForeignKey(pa => pa.ProductId);
+
+            modelBuilder.Entity<Product_DiscountCode>()
+                .HasOne(pa => pa.DiscountCode)
+                .WithMany(p => p.Product_DiscountCode)
+                .HasForeignKey(pa => pa.CodeId);
+
+
+            // ساختن مقدار پیشفرض در دیتابیس
+            modelBuilder.Entity<Roles>().HasData(
+                new Roles { RoleId = 1, RoleName = "Admin" },
+                new Roles { RoleId = 2, RoleName = "Seller" },
+                new Roles { RoleId = 3, RoleName = "Customer" }
+                );
         }
+
     }
 }

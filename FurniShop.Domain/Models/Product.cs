@@ -19,9 +19,6 @@ namespace FurniShop.Domain.Models
         [ForeignKey("User")]
         public int UserId { get; set; }
 
-        [ForeignKey("DiscountCode")]
-        public int? DiscountCodeId { get; set; }
-
         public decimal? Discount { get; set; }
 
         public string ProductName { get; set; } = null!;
@@ -44,6 +41,8 @@ namespace FurniShop.Domain.Models
         public ICollection<ProductAttribute>? ProductAttributes { get; set; } 
 
         public ICollection<Review>? Reviews { get; set; }
+
+        public ICollection<Product_DiscountCode> Product_DiscountCode { get; set; }
     }
 
 }

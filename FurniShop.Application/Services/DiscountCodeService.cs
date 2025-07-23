@@ -17,21 +17,23 @@ namespace FurniShop.Application.Services
         private readonly IDiscountCodeRepository _descountcoderepository;
         private readonly IProductRepository _productrepository ;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public DiscountCodeService(IDiscountCodeRepository descountcoderepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor)
+        private readonly ICategoryRepository _categoryRpository;
+        public DiscountCodeService(IDiscountCodeRepository descountcoderepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, ICategoryRepository categoryRpository)
         {
             _descountcoderepository = descountcoderepository;
             _productrepository = productRepository;
             _httpContextAccessor = httpContextAccessor;
+            _categoryRpository = categoryRpository;
         }
 
         public async Task Create(DiscountCodeRequest request)
         {
-            var isActive = request.StartedAt >= DateOnly.FromDateTime(DateTime.Now) &&
-                           request.EndAt < DateOnly.FromDateTime(DateTime.Now);
+            var isActive = request.StartedAt <= DateOnly.FromDateTime(DateTime.Now) &&
+                           request.EndAt > DateOnly.FromDateTime(DateTime.Now);
 
-            int userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(type: ClaimTypes.NameIdentifier).Value);
+            int userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(type: ClaimTypes.NameIdentifier)!.Value);
 
-            var selectedProducts = SelectProduct(request.CategoryId, request.ProductIds, userId);
+            var selectedProducts = SelectProduct(request.CategoryId, request.ProductIds!, userId);
 
             CheckDiscount(request.DiscountType, request.Discount,await selectedProducts);
 
@@ -47,17 +49,44 @@ namespace FurniShop.Application.Services
 
                 CategoryId = request.CategoryId,
 
-                Products = await selectedProducts,
-
                 Discount = request.Discount,
 
                 SellerId = userId,
 
                 CreatedAt = DateTime.Now,
 
-                Min_Order_Amount = request.MinOrderAmount
+                Min_Order_Amount = request.MinOrderAmount,
+
+                Product_DiscountCode = new List<Product_DiscountCode>()
+
             };
 
+            List<int> productIds = new List<int>();
+
+            if(request.CategoryId != null)
+            {
+                var products = await _productrepository.GetByCategory(request.CategoryId);
+
+                foreach(var product in products)
+                {
+                    productIds.Add(product.ProductId);
+                }
+            }
+            else
+            {
+                foreach(var ids in request.ProductIds!)
+                {
+                    productIds.Add(ids);
+                }
+            }
+
+                foreach (var productId in productIds)
+                {
+                    discountCode.Product_DiscountCode.Add(new Product_DiscountCode
+                    {
+                        ProductId = productId
+                    });
+                }
             await _descountcoderepository.Create(discountCode);
         }
 

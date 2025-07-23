@@ -1,4 +1,5 @@
-﻿using FurniShop.Domain.Interfaces;
+﻿using Azure.Core;
+using FurniShop.Domain.Interfaces;
 using FurniShop.Domain.Models;
 using Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -98,6 +99,11 @@ namespace Infra.Data.Repository
             var products = await _ctx.Products.Where(p => p.UserId == userId).ToListAsync();
 
             return products;
+        }
+
+        public async Task<List<Product>> GetByCategory(int? CategoryId)
+        {
+            return await _ctx.Products.Where(p => p.CategoryId == CategoryId).ToListAsync();
         }
 
     }

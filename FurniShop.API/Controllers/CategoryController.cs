@@ -1,4 +1,5 @@
-﻿using FurniShop.Application.DTOs.Product;
+﻿using AutoMapper;
+using FurniShop.Application.DTOs.Product;
 using FurniShop.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,9 +15,11 @@ namespace FurniShop.API.Controllers
     public class CategoryController : ControllerBase
     {
         private ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        private IMapper _mapper;
+        public CategoryController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
         }
 
         #region Get All Category
@@ -28,7 +31,7 @@ namespace FurniShop.API.Controllers
             {
                 return NotFound("دسته بندی وجود ندارد");
             }
-
+            var categoryDto = _mapper.Map<List<CategoryRequest>>(categories);
             return Ok(categories);
         }
         #endregion
