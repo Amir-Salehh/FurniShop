@@ -263,6 +263,29 @@ namespace Infra.Data.Migrations
                     b.HasKey("LevelId");
 
                     b.ToTable("Levels");
+
+                    b.HasData(
+                        new
+                        {
+                            LevelId = 1,
+                            DiscountSharePercent = 10m,
+                            LevelName = "Bronze",
+                            MinSales = 0m
+                        },
+                        new
+                        {
+                            LevelId = 2,
+                            DiscountSharePercent = 15m,
+                            LevelName = "Silver",
+                            MinSales = 50000000m
+                        },
+                        new
+                        {
+                            LevelId = 3,
+                            DiscountSharePercent = 20m,
+                            LevelName = "Gold",
+                            MinSales = 100000000m
+                        });
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.Order", b =>
@@ -468,6 +491,23 @@ namespace Infra.Data.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "Seller"
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            RoleName = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.SellerPayout", b =>

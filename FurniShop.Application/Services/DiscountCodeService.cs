@@ -18,12 +18,15 @@ namespace FurniShop.Application.Services
         private readonly IProductRepository _productrepository ;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICategoryRepository _categoryRpository;
-        public DiscountCodeService(IDiscountCodeRepository descountcoderepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor, ICategoryRepository categoryRpository)
+        private readonly IProductDiscountCodeRepository _productDiscountCodeRepository;
+        public DiscountCodeService(IDiscountCodeRepository descountcoderepository, IProductRepository productRepository, IHttpContextAccessor httpContextAccessor,
+            ICategoryRepository categoryRpository, IProductDiscountCodeRepository productDiscountCodeRepository)
         {
             _descountcoderepository = descountcoderepository;
             _productrepository = productRepository;
             _httpContextAccessor = httpContextAccessor;
             _categoryRpository = categoryRpository;
+            _productDiscountCodeRepository = productDiscountCodeRepository;
         }
 
         public async Task Create(DiscountCodeRequest request)
@@ -153,6 +156,59 @@ namespace FurniShop.Application.Services
         public async Task<bool> CheckExist(string code)
         {
             return await _descountcoderepository.CheckExist(code);
+        }
+
+        public async Task<bool> CheckExist(int id)
+        {
+            return await _descountcoderepository.CheckExist(id);
+        }
+
+        public async Task Update(DiscountCodeRequest request, int id)
+        {
+            var discountCode = await _descountcoderepository.GetById(id)!;
+
+            int userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(type: ClaimTypes.NameIdentifier)!.Value);
+
+            var selectedProducts = SelectProduct(request.CategoryId, request.ProductIds!, userId);
+
+            CheckDiscount(request.DiscountType, request.Discount, await selectedProducts);
+
+            discountCode.CodeName = request.CodeName;
+            discountCode.Note = request.Note;
+            discountCode.StartedAt = request.StartedAt;
+            discountCode.EndAt = request.EndAt;
+            discountCode.CategoryId = request.CategoryId;
+
+            List<int> productIds = new List<int>();
+
+            if (request.CategoryId != null)
+            {
+                var products = await _productrepository.GetByCategory(request.CategoryId);
+
+                foreach (var product in products)
+                {
+                    productIds.Add(product.ProductId);
+                }
+            }
+            else
+            {
+                foreach (var ids in request.ProductIds!)
+                {
+                    productIds.Add(ids);
+                }
+            }
+
+            discountCode.Product_DiscountCode.Clear();
+
+            foreach (var product in productIds)
+            {
+                discountCode.Product_DiscountCode.Add(new Product_DiscountCode
+                {
+                    ProductId = product
+                });
+            }
+
+            await _descountcoderepository.Update(discountCode);
         }
     }
 }

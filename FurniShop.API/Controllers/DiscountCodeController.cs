@@ -23,13 +23,13 @@ namespace FurniShop.API.Controllers
 
 
         #region Get All Discount Codes
-        [HttpGet("DiscountCodes")]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult GetAll()
         {
             var Codes = _discountCodeService.GetAll();
 
-            if(Codes == null || Codes.Count == 0)
+            if (Codes == null || Codes.Count == 0)
             {
                 return BadRequest("کد تخفیفی وجود ندارد");
             }
@@ -41,7 +41,7 @@ namespace FurniShop.API.Controllers
         #endregion
 
         #region Create DiscountCode
-        [HttpPost("Create")]
+        [HttpPost]
         [Authorize(Roles = "Admin,Seller")]
         public async Task<IActionResult> Create([FromBody] DiscountCodeRequest request)
         {
@@ -70,7 +70,28 @@ namespace FurniShop.API.Controllers
                 return BadRequest(ex.Message);
             }
 
-            
+
+        }
+        #endregion
+
+        #region Update DiscountCode
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin, Seller")]
+        public async Task<IActionResult> Update(int id, [FromBody] DiscountCodeRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(!await _discountCodeService.CheckExist(id))
+            {
+                return NotFound("کد تخفیف پیدا نشد");
+            }
+
+            await _discountCodeService.Update(request, id);
+
+            return Ok("کد تخفیف آپدیت شد");
         }
         #endregion
 

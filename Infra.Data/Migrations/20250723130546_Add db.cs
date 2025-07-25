@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Infra.Data.Migrations
 {
     /// <inheritdoc />
@@ -60,7 +62,8 @@ namespace Infra.Data.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Min_Order_Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CodeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Products = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,7 +147,6 @@ namespace Infra.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    DiscountCodeId = table.Column<int>(type: "int", nullable: true),
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -165,11 +167,6 @@ namespace Infra.Data.Migrations
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_DiscountCodes_DiscountCodeId",
-                        column: x => x.DiscountCodeId,
-                        principalTable: "DiscountCodes",
-                        principalColumn: "DiscountCodeId");
                 });
 
             migrationBuilder.CreateTable(
@@ -311,6 +308,30 @@ namespace Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Product_DiscountCode",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    CodeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product_DiscountCode", x => new { x.ProductId, x.CodeId });
+                    table.ForeignKey(
+                        name: "FK_Product_DiscountCode_DiscountCodes_CodeId",
+                        column: x => x.CodeId,
+                        principalTable: "DiscountCodes",
+                        principalColumn: "DiscountCodeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Product_DiscountCode_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductAttributes",
                 columns: table => new
                 {
@@ -414,6 +435,16 @@ namespace Infra.Data.Migrations
                         principalColumn: "Cart_Id");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "RoleId", "RoleName" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "Seller" },
+                    { 3, "Customer" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
                 table: "Addresses",
@@ -456,6 +487,11 @@ namespace Infra.Data.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Product_DiscountCode_CodeId",
+                table: "Product_DiscountCode",
+                column: "CodeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductAttributes_AttributeId",
                 table: "ProductAttributes",
                 column: "AttributeId");
@@ -464,11 +500,6 @@ namespace Infra.Data.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_DiscountCodeId",
-                table: "Products",
-                column: "DiscountCodeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_Product_Id",
@@ -513,6 +544,9 @@ namespace Infra.Data.Migrations
                 name: "Payments");
 
             migrationBuilder.DropTable(
+                name: "Product_DiscountCode");
+
+            migrationBuilder.DropTable(
                 name: "ProductAttributes");
 
             migrationBuilder.DropTable(
@@ -531,6 +565,9 @@ namespace Infra.Data.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "DiscountCodes");
+
+            migrationBuilder.DropTable(
                 name: "Attributes");
 
             migrationBuilder.DropTable(
@@ -544,9 +581,6 @@ namespace Infra.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "DiscountCodes");
         }
     }
 }

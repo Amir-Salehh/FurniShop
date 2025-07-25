@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Data.Migrations
 {
     [DbContext(typeof(FurniShopDbContext))]
-    [Migration("20250723083736_Add db")]
-    partial class Adddb
+    [Migration("20250723132506_Add level")]
+    partial class Addlevel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +227,10 @@ namespace Infra.Data.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
+                    b.PrimitiveCollection<string>("Products")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SellerId")
                         .HasColumnType("int");
 
@@ -262,6 +266,29 @@ namespace Infra.Data.Migrations
                     b.HasKey("LevelId");
 
                     b.ToTable("Levels");
+
+                    b.HasData(
+                        new
+                        {
+                            LevelId = 1,
+                            DiscountSharePercent = 10m,
+                            LevelName = "Bronze",
+                            MinSales = 0m
+                        },
+                        new
+                        {
+                            LevelId = 2,
+                            DiscountSharePercent = 15m,
+                            LevelName = "Silver",
+                            MinSales = 50000000m
+                        },
+                        new
+                        {
+                            LevelId = 3,
+                            DiscountSharePercent = 20m,
+                            LevelName = "Gold",
+                            MinSales = 100000000m
+                        });
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.Order", b =>
@@ -347,9 +374,6 @@ namespace Infra.Data.Migrations
                     b.Property<decimal?>("Discount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("DiscountCodeId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("DiscountedPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -385,8 +409,6 @@ namespace Infra.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("DiscountCodeId");
-
                     b.ToTable("Products");
                 });
 
@@ -407,6 +429,21 @@ namespace Infra.Data.Migrations
                     b.HasIndex("AttributeId");
 
                     b.ToTable("ProductAttributes");
+                });
+
+            modelBuilder.Entity("FurniShop.Domain.Models.Product_DiscountCode", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CodeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CodeId");
+
+                    b.HasIndex("CodeId");
+
+                    b.ToTable("Product_DiscountCode");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.Review", b =>
@@ -457,6 +494,23 @@ namespace Infra.Data.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "Seller"
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            RoleName = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.SellerPayout", b =>
@@ -664,10 +718,6 @@ namespace Infra.Data.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("FurniShop.Domain.Models.DiscountCode", null)
-                        .WithMany("Products")
-                        .HasForeignKey("DiscountCodeId");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.ProductAttribute", b =>
@@ -685,6 +735,25 @@ namespace Infra.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Attribute");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("FurniShop.Domain.Models.Product_DiscountCode", b =>
+                {
+                    b.HasOne("FurniShop.Domain.Models.DiscountCode", "DiscountCode")
+                        .WithMany("Product_DiscountCode")
+                        .HasForeignKey("CodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FurniShop.Domain.Models.Product", "Product")
+                        .WithMany("Product_DiscountCode")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DiscountCode");
 
                     b.Navigation("Product");
                 });
@@ -750,12 +819,14 @@ namespace Infra.Data.Migrations
 
             modelBuilder.Entity("FurniShop.Domain.Models.DiscountCode", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Product_DiscountCode");
                 });
 
             modelBuilder.Entity("FurniShop.Domain.Models.Product", b =>
                 {
                     b.Navigation("ProductAttributes");
+
+                    b.Navigation("Product_DiscountCode");
 
                     b.Navigation("Reviews");
                 });

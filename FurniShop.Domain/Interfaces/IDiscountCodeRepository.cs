@@ -11,17 +11,18 @@ namespace FurniShop.Domain.Interfaces
     {
         public IEnumerable<DiscountCode> GetAll();
 
-        public DiscountCode GetById(int id);
+        public Task<DiscountCode> GetById(int id);
 
-        public DiscountCode GetByCode(string code);
+        public Task<DiscountCode> GetByCode(string code);
 
         public Task Create(DiscountCode discountCode);
 
-        public void Update(DiscountCode discountCode);
+        public Task Update(DiscountCode discountCode);
 
         public void Delete(int id);
 
         public Task<bool> CheckExist(string code);
+        public Task<bool> CheckExist(int id);
 
         public Task Save();
     }

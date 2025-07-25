@@ -13,7 +13,7 @@ namespace FurniShop.Application.Profiles
     {
         public CategoryMappingProfile()
         {
-            CreateMap<Category, CategoryRequest>();
+            CreateMap<Category, CategoryResponseDto>();
         }
     }
 }

@@ -91,6 +91,12 @@ namespace Infra.Data.Context
                 new Roles { RoleId = 2, RoleName = "Seller" },
                 new Roles { RoleId = 3, RoleName = "Customer" }
                 );
+
+            modelBuilder.Entity<Level>().HasData(
+                new Level { LevelId = 1, LevelName = "Bronze", MinSales = 0, DiscountSharePercent = 10 },
+                new Level { LevelId = 2, LevelName = "Silver", MinSales = 50000000, DiscountSharePercent = 15 },
+                new Level { LevelId = 3, LevelName = "Gold", MinSales = 100000000, DiscountSharePercent = 20 }
+            );
         }
 
     }

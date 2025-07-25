@@ -31,8 +31,9 @@ namespace FurniShop.API.Controllers
             {
                 return NotFound("دسته بندی وجود ندارد");
             }
-            var categoryDto = _mapper.Map<List<CategoryRequest>>(categories);
-            return Ok(categories);
+            var categoryDto = _mapper.Map<List<CategoryResponseDto>>(categories);
+
+            return Ok(categoryDto);
         }
         #endregion
 
@@ -96,7 +97,6 @@ namespace FurniShop.API.Controllers
             return Ok("دسته بندی حذف شد");
         }
         #endregion
-
 
     }
 }

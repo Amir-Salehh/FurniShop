@@ -37,17 +37,19 @@ namespace Infra.Data.Repository
 
         }
 
-        public DiscountCode GetByCode(string code)
+        public async Task<DiscountCode> GetByCode(string code)
         {
-            throw new NotImplementedException();
+            var DiscountCode = await _ctx.DiscountCodes.FindAsync(code);
+            return DiscountCode!;
         }
 
-        public DiscountCode GetById(int id)
+        public async Task<DiscountCode> GetById(int id)
         {
-            throw new NotImplementedException();
+            var DiscountCode = await _ctx.DiscountCodes.FindAsync(id);
+            return DiscountCode!;
         }
 
-        public void Update(DiscountCode discountCode)
+        public Task Update(DiscountCode discountCode)
         {
             throw new NotImplementedException();
         }
@@ -55,6 +57,10 @@ namespace Infra.Data.Repository
         public async Task<bool> CheckExist(string code)
         {
             return await _ctx.DiscountCodes.AnyAsync(d => d.Code == code);
+        }
+        public async Task<bool> CheckExist(int id)
+        {
+            return await _ctx.DiscountCodes.AnyAsync(d => d.DiscountCodeId == id);
         }
 
         public async Task Save()
